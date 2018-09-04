@@ -1,0 +1,74 @@
+body {
+	margin:			10px 10px;
+	min-width:		200px;
+}
+
+h1 {
+	font-size:			15px;
+	text-align:			center;
+}
+
+div {
+	width:				100%;
+	display:			none;
+}
+
+table {
+	width:				100%;
+	border-spacing:		2px 12px;
+	cursor:				default;
+}
+
+td {
+	vertical-align:		middle;
+}
+
+
+.highlightCell
+{
+	font-weight:		bold;
+	color:				red;
+}
+
+.center
+{
+	 text-align:		center;
+}
+
+.warning {
+	color:				red;
+	font-size:			90%;
+}
+
+.href {
+	color:				blue;
+	text-decoration:	underline blue;
+}
+
+#divLogins {
+	white-space:		nowrap;
+	font-weight:		bold;
+}
+
+#textTotalLogins {
+	font-size:			11px;
+	white-space:		nowrap;
+	color:				#BBB;
+}
+
+#divCountdown {
+	z-index:			1;
+	position:			absolute;
+	right: 				5px;
+	bottom:				5px;
+	width:				70px;
+	height:				70px;
+	padding:			0px;
+	line-height:		1.4em;
+	background-color:	#000;
+	font-size:			46px;
+	font-weight:		bold;
+	text-align:			center;
+	color:				white;
+	border-radius:		50%;
+}

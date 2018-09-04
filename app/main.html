@@ -1,0 +1,94 @@
+<!doctype html>
+<meta charset="UTF-8">
+<html>
+	<head>
+		<title>OwnCloud Passwords</title>
+	</head>
+	<script src="actions.js"></script>
+	<script src="script.js"></script>
+	<link rel="stylesheet" href="style.css">
+	<body>
+		<div id="divSettings">
+			<h3>Enter your ownCloud credentials:</h3>
+			<form id="form">
+				<table align="center" class="equalDivide">
+					<tr>
+						<td>Host:</td>
+						<td>
+							<input type="text" id="host" placeholder="https://example.com/owncloud" />
+						</td>
+					</tr>
+					<tr id="hostWarning">
+						<td colspan=2 class="warning">
+							Warning:<br>This connection will be unencrypted and<br>expose all your passwords on the network!
+						</td>
+					</tr>
+					<tr>
+						<td>User:</td>
+						<td>
+							<input type="text" id="user" />
+						</td>
+					</tr>
+					<tr>
+						<td>Password:</td>
+						<td>
+							<input type="password" id="pass" />
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<input type="checkbox" id="remember">
+							<label for="remember">Remember username and password</label></input>
+						</td>
+					</tr>
+				</table>
+				<br>
+				<table align="center" class="equalDivide">
+					<tr>
+						<td colspan=2 align="center">
+							<input type="button" id="save" value="Save">
+							<input type="button" id="cancel" value="Cancel">
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<div id="divPasswords">
+			<p id="divLogins">No Logins found for this site.</p>
+			<hr>
+			<table id="tableSearch">
+				<tr>
+					<td>
+						<!--button type="button" id="buttonSearch">Search</button-->
+						<img id="buttonSearch" src="/images/find.png" style="width:24px;height:24px;">
+					</td>
+					<td colspan=3>
+						<input type="text" id="inputSearch" placeholder="Search for passwords..." />
+					</td>
+					<td>
+						<img id="cancelSearch" src="/images/cancel2.png" style="width:16px;height:16px;">
+					</td>
+				</tr>
+				<tr id="searchWarning">
+					<td colspan=5 class="warning">
+						Warning: Minimum 3 letters to search!
+					</td>
+				</tr>
+			</table>
+			<hr>
+			<p id="textTotalLogins">0 Logins in Database</p>
+			<table>
+				<tr>
+					<td>
+						<button type="button" id="buttonRefresh">Refresh</button>
+					</td>
+					<td>
+						<button type="button" id="buttonSettings">Settings</button>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="divCountdown">
+		</div>
+	</body>
+</html>

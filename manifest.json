@@ -1,0 +1,29 @@
+{
+	"manifest_version": 2,
+	"name": "OC-Passwords",
+	"version": "1.00",
+
+	"description": "Access your Owncloud Passwords.",
+	"icons": { "256": "images/icon_white.png" },
+	"background": {
+		"scripts": [
+			"background/background.js",
+			"background/functions.js",
+			"background/api.js",
+			"background/url.js"
+		],
+		"persistent": false
+	},
+	"browser_action": {
+		"default_icon": "images/icon_white.png",
+		"default_popup": "app/main.html"
+	},
+	"permissions": [
+	 	"https://*/",
+		"activeTab",
+		"clipboardWrite",
+		"notifications",
+		"storage",
+		"tabs"
+	]
+}
