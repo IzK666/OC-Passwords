@@ -1,4 +1,8 @@
 # OC-Passwords
-A web extension to access your owncloud passwords. Supports Chrome, Vivaldi and Firefox. Other Chromium and Firefox based browser not tested.
-It replaces the old [ff-oc-passwords](https://github.com/eglia/ff-oc-passwords) from eglia.
-Requires 
+Replaces the old [ff-oc-passwords](https://github.com/eglia/ff-oc-passwords) from Eglia.
+
+A web extension to access your owncloud passwords. Supports (tested with) Chrome, Vivaldi and Firefox.
+
+
+To do:
+* Save new passwords.
