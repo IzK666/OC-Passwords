@@ -8,6 +8,10 @@ browser.runtime.onInstalled.addListener(function() {
 	start();
 });
 
+browser.runtime.onStartup.addListener(function() {
+	start();
+});
+
 browser.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
 		switch (request.Action) {
@@ -39,6 +43,7 @@ browser.runtime.onMessage.addListener(
 			case "openLink":
 				var a = document.createElement("a");
 				browser.tabs.create({ url: database.search[request.list][request.id] });
+				searchRemove();
 				break;
 
 			case "fill":
@@ -67,20 +72,29 @@ browser.runtime.onMessage.addListener(
 				break;
 
 			case "searchRemove":
-				delete database.search;
-				localStorage.removeItem("searchword");
+				searchRemove();
 				break;
 
 			case "setIcon":
 				if (database.vault)
 					if (localStorage.getItem("icon"))
-						browser.browserAction.setIcon({path: "images/" + localStorage.getItem("icon") + "2.png"});
+						browser.browserAction.setIcon({path: "images/" + localStorage.getItem("icon") + ".png"});
 					else
-						browser.browserAction.setIcon({path: "images/icon_black2.png"});
+						browser.browserAction.setIcon({path: "images/icon_black.png"});
 				break;
 
 			case "reloadURLs":
 				processDatabase();
+				break;
+
+			case "logout":
+				logout();
+				break;
+
+			case "alarm":
+				browser.alarms.clear("idle");
+				if ((parseInt(localStorage.getItem("idleTime")) == 1) && (database.vault))
+					enableAlarm();
 				break;
 
 			default:
@@ -111,3 +125,7 @@ browser.tabs.onActivated.addListener( function(info) {
 	localStorage.removeItem("db");
 	notificationError("suspend");
 });*/
+
+browser.alarms.onAlarm.addListener(function(alarm) {
+	logout();
+});

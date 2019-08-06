@@ -30,11 +30,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 /*	document.getElementById("buttonIcon").addEventListener("click", function(){
 		seticon();
-	});*/
+	});
 
 	document.getElementById("buttonSettings").addEventListener("click", function(){
 		viewSettings();
-	});
+	});*/
 
 	document.getElementById("buttonRefresh").addEventListener("click", function(){
 		refresh();
@@ -43,6 +43,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	document.getElementById("cancelSearch").addEventListener("click", function(){
 		searchRemove();
+	});
+
+	document.getElementById("logout").addEventListener("click", function(){
+		logout();
 	});
 
 	document.getElementById("host").addEventListener("change", function(){

@@ -80,6 +80,9 @@ function load() {
 				search();
 				document.getElementById("inputSearch").select();
 			}
+			
+			// reset Alarm
+			browser.runtime.sendMessage({Action: "alarm"});
 		}
 		else {
 			browser.browserAction.setBadgeText({text: ""});
@@ -171,6 +174,11 @@ function cancel() {
 
 function refresh() {
 	browser.runtime.sendMessage({ Action: "refresh" });
+	window.close();
+}
+
+function logout() {
+	browser.runtime.sendMessage({ Action: "logout" });
 	window.close();
 }
 

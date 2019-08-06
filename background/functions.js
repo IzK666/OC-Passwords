@@ -28,7 +28,7 @@ function start() {
 
 	localStorage.removeItem("searchword"); // Remove search
 	browser.browserAction.setBadgeText({text: ""});
-
+	browser.browserAction.setIcon({path: "images/icon_grey.png"});
 }
 
 function login(Host, User, Pass) {
@@ -56,6 +56,9 @@ function loggedIn() {
 			processPasswords(tabs[0].url);
 		} catch (err) {}
 	});
+	if (localStorage.getItem("idleTime")) {
+		enableAlarm();
+	}
 }
 
 function toClipboard(val="") {
@@ -140,4 +143,25 @@ function dynamicSortMultiple() {
         }
         return result;
     }
+}
+
+function searchRemove() {
+	delete database.search;
+	localStorage.removeItem("searchword");
+}
+
+function enableAlarm() {
+	let time = 60;
+	if (localStorage.getItem("idleH") && localStorage.getItem("idleM"))
+		time = parseInt(localStorage.getItem("idleH")) * 60 + parseInt(localStorage.getItem("idleM"));
+	browser.alarms.create("idle", {delayInMinutes: time} );
+}
+
+function logout() {
+	delete database.Login;
+	delete database.Pass;
+	delete database.vault;
+	delete database.search;
+	browser.browserAction.setIcon({path: "images/icon_grey.png"});
+	browser.browserAction.setBadgeText({text: ""});
 }

@@ -3,6 +3,7 @@ window.browser = (function () {
 })();
 
 var change = false;
+var idle = false;
 
 // Saves options to chrome.storage
 function save_options() {
@@ -16,8 +17,14 @@ function save_options() {
 	localStorage.setItem("ignoreTLD", (document.getElementById('ignoreTLD').checked ? 1 : 0));
 	localStorage.setItem("ignorePort", (document.getElementById('ignorePort').checked ? 1 : 0));
 	localStorage.setItem("ignorePath", (document.getElementById('ignorePath').checked ? 1 : 0));
+	localStorage.setItem("idleTime", (document.getElementById('idleLogout').checked ? 1 : 0));
+	localStorage.setItem("idleH", (document.getElementById('idleH').value));
+	localStorage.setItem("idleM", (document.getElementById('idleM').value));
+
 	if (change)
 		browser.runtime.sendMessage({Action: "reloadURLs"});
+	if (idle)
+		browser.runtime.sendMessage({Action: "alarm"});
 	window.close();
 }
 
@@ -29,6 +36,9 @@ function restore_options() {
 	document.getElementById('ignoreTLD').checked = (parseInt(localStorage.getItem("ignoreTLD")) ? true : false);
 	document.getElementById('ignorePort').checked = (parseInt(localStorage.getItem("ignorePort")) ? true : false);
 	document.getElementById('ignorePath').checked = (parseInt(localStorage.getItem("ignorePath")) ? true : false);
+	document.getElementById('idleLogout').checked = (parseInt(localStorage.getItem("idleTime")) ? true : false);
+	document.getElementById('idleH').value = (localStorage.idleH) ? parseInt(localStorage.getItem("idleH")) : 1;
+	document.getElementById('idleM').value = (localStorage.idleM) ? parseInt(localStorage.getItem("idleM")) : 0;
 }
 
 document.addEventListener('DOMContentLoaded', restore_options);
@@ -51,3 +61,5 @@ document.getElementById('Subdomain').addEventListener('change', function() {chan
 document.getElementById('TLD').addEventListener('change', function() {change = true;});
 document.getElementById('Port').addEventListener('change', function() {change = true;});
 document.getElementById('Path').addEventListener('change', function() {change = true;});
+
+document.getElementById('Idle').addEventListener('change', function() {idle = true;});
