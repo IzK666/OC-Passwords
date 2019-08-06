@@ -5,7 +5,7 @@ window.browser = (function () {
 })();
 
 browser.runtime.onInstalled.addListener(function() {
-	checkStorage();
+	start();
 });
 
 browser.runtime.onMessage.addListener(
@@ -33,16 +33,12 @@ browser.runtime.onMessage.addListener(
 				else
 					toClipboard(database.passwords[request.list][request.id]);
 
-				countdown(10);
+				countdown(parseInt(localStorage.getItem("countDown")));
 				break;
 
 			case "openLink":
 				var a = document.createElement("a");
 				browser.tabs.create({ url: database.search[request.list][request.id] });
-/*				a.href = database.search[request.list][request.id];
-				a.target = "_blank";
-				var clickEvent = new MouseEvent("click");
-				a.dispatchEvent(clickEvent);*/
 				break;
 
 			case "fill":
@@ -58,9 +54,8 @@ browser.runtime.onMessage.addListener(
 				break;
 
 			case "search":
-				database.searchword = request.string;
 				delete database.search;
-				searchPasswords(request.string);
+				searchPasswords(localStorage.getItem("searchword"));
 				if (database.search)
 					sendResponse({
 						websiteList: database.search.websiteList,
@@ -73,11 +68,19 @@ browser.runtime.onMessage.addListener(
 
 			case "searchRemove":
 				delete database.search;
-				delete database.searchword;
+				localStorage.removeItem("searchword");
 				break;
 
 			case "setIcon":
-				browser.browserAction.setIcon({path: "images/icon_black.png"});
+				if (database.vault)
+					if (localStorage.getItem("icon"))
+						browser.browserAction.setIcon({path: "images/" + localStorage.getItem("icon") + "2.png"});
+					else
+						browser.browserAction.setIcon({path: "images/icon_black2.png"});
+				break;
+
+			case "reloadURLs":
+				processDatabase();
 				break;
 
 			default:
@@ -103,3 +106,8 @@ browser.tabs.onActivated.addListener( function(info) {
 		} catch (err) {}
 	});
 });
+
+/*browser.runtime.onSuspend.addListener(function() {
+	localStorage.removeItem("db");
+	notificationError("suspend");
+});*/

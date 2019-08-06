@@ -41,13 +41,21 @@
 							<label for="remember">Remember username and password</label></input>
 						</td>
 					</tr>
-				</table>
-				<br>
-				<table align="center" class="equalDivide">
 					<tr>
-						<td colspan=2 align="center">
-							<input type="button" id="save" value="Save">
-							<input type="button" id="cancel" value="Cancel">
+						<br>
+					</tr>
+					<tr>
+						<td>
+						</td>
+						<td>
+							<table align="center" class="equalDivide">
+								<tr>
+									<td colspan=2 align="center">
+										<input type="button" id="save" value="Save">
+										<input type="button" id="cancel" value="Cancel">
+									</td>
+								</tr>
+							</table>
 						</td>
 					</tr>
 				</table>
@@ -66,7 +74,7 @@
 						<input type="text" id="inputSearch" placeholder="Search for passwords..." />
 					</td>
 					<td>
-						<img id="cancelSearch" src="/images/cancel2.png" style="width:16px;height:16px;">
+						<img id="cancelSearch" src="/images/cancel.png" style="width:16px;height:16px;">
 					</td>
 				</tr>
 				<tr id="searchWarning">
@@ -76,14 +84,13 @@
 				</tr>
 			</table>
 			<hr>
-			<p id="textTotalLogins">0 Logins in Database</p>
-			<table>
+			<table id="infoDB">
 				<tr>
 					<td>
-						<button type="button" id="buttonRefresh">Refresh</button>
+						<span class="infoDB" id="textTotalLogins">0 Logins in Database</span>
 					</td>
 					<td>
-						<button type="button" id="buttonSettings">Settings</button>
+						<button id="buttonRefresh" tabindex="-1"><span class="infoDB">Refresh</span></button>
 					</td>
 				</tr>
 			</table>

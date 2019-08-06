@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head><title>OC Passwords Options</title></head>
+	<link rel="stylesheet" href="options.css">
+
+	<body>
+		<label class="title">Icon color</label><br>
+		<select id="icon">
+			<option value="icon_white">White key (for dark themes)</option>
+			<option value="icon_black">Black key (for light themes)</option>
+		</select>
+
+		<br><br>
+
+		<label class="title">Url matching</label><br>
+		<label id="Protocol">
+			<input type="checkbox" id="ignoreProtocol">
+			Ignore Protocol  <span id="exampleProtocol" class="hide">(<span class="red">http://</span>www.example.com/path)</span>
+		</label>
+		<br>
+		<label id="Subdomain">
+			<input type="checkbox" id="ignoreSubdomain">
+			Ignore Subdomains  <span id="exampleSubdomain" class="hide">(http://<span class="red">www</span>.example.com/path)</span>
+		</label>
+		<br>
+		<label id="TLD">
+			<input type="checkbox" id="ignoreTLD">
+			Ignore TLD  <span id="exampleTLD" class="hide">(http://www.example.<span class="red">com</span>/path)</span>
+		</label>
+		<br>
+		<label id="Port">
+			<input type="checkbox" id="ignorePort">
+			Ignore Port  <span id="examplePort" class="hide">(http://www.example.com<span class="red">:port</span>/path)</span>
+		</label>
+		<br>
+		<label id="Path">
+			<input type="checkbox" id="ignorePath">
+			Ignore Path  <span id="examplePath" class="hide">(http://www.example.com/<span class="red">path</span>)</span>
+		</label>
+		<br>
+		<br>
+		<div id="status"></div>
+		<button id="save">Save</button>
+		
+		<script src="options.js"></script>
+	</body>
+</html>

@@ -1,0 +1,17 @@
+.red {
+	color:				red;
+	font-weight:		bold;
+}
+
+.title {
+	font-size:			150%;
+}
+
+.hide {
+	display:			none;
+}
+
+span {
+	font-style:			italic;
+	color:				blue;
+}

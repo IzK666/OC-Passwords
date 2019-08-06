@@ -10,8 +10,7 @@ function load() {
 		document.getElementById("user").value = localStorage.getItem("user");
 	if (localStorage.getItem("pass"))
 		document.getElementById("pass").value = localStorage.getItem("pass");
-	if (localStorage.getItem("remember") == "true")
-		document.getElementById("remember").checked = true;
+	document.getElementById("remember").checked = (parseInt(localStorage.getItem("remember")) ? true : false);
 
 	hostChanged();
 
@@ -20,7 +19,7 @@ function load() {
 		if (response) {
 			searchChanged();
 			viewPasswords();
-			document.getElementById("textTotalLogins").textContent = response + " Logins in Database";
+			document.getElementById("textTotalLogins").textContent = response + " logins in Database";
 			document.getElementById("inputSearch").focus();
 
 			// Get passwords for current page, if any.
@@ -79,6 +78,7 @@ function load() {
 			if (localStorage.getItem("searchword")) {
 				document.getElementById("inputSearch").value = localStorage.getItem("searchword");
 				search();
+				document.getElementById("inputSearch").select();
 			}
 		}
 		else {
@@ -141,8 +141,8 @@ function save() {
 	let User = document.getElementById("user").value;
 	let Pass = document.getElementById("pass").value
 	localStorage.setItem("host", Host);
-	localStorage.setItem("remember", document.getElementById("remember").checked);
-	if (document.getElementById("remember").checked == true) {
+	localStorage.setItem("remember", (document.getElementById("remember").checked ? 1 : 0));
+	if (document.getElementById("remember").checked) {
 		localStorage.setItem("user", User);
 		localStorage.setItem("pass", Pass);
 	}
@@ -158,7 +158,7 @@ function save() {
 
 function cancel() {
 	document.getElementById("host").value = localStorage.getItem("host");
-	document.getElementById("remember").checked = localStorage.getItem("remember");
+	document.getElementById("remember").checked = (parseInt(localStorage.getItem("remember")) ? true : false);
 	if (document.getElementById("remember").checked) {
 		document.getElementById("user").value = localStorage.getItem("user");
 		document.getElementById("pass").value = localStorage.getItem("pass");
@@ -190,7 +190,7 @@ function search() {
 
 	localStorage.setItem("searchword", string);
 
-	browser.runtime.sendMessage({Action: "search", "string": string}, function (response) {
+	browser.runtime.sendMessage({Action: "search"}, function (response) {
 		if (response) {
 
 			let random = parseInt(Math.random() * 10 + 1);
@@ -226,27 +226,17 @@ function search() {
 				td2.addEventListener("mouseenter", enterCell, false);
 				td2.addEventListener("mouseleave", leaveCell, false);
 			
-				let td3 = document.createElement("td");
-				td3.style.width = "15%";
-				td3.addEventListener("click", clickFill, false);
-			
 				let td0T = document.createTextNode(response.websiteList[i]);
 				let td1T = document.createTextNode(response.userList[i]);
 				let td2T = document.createTextNode("*****");
-				let td3B = document.createElement("button");
-				let td3BT = document.createTextNode("Fill");
 			
-				td3B.appendChild(td3BT);
-
 				td0.appendChild(td0T);
 				td1.appendChild(td1T);
 				td2.appendChild(td2T);
-//				td3.appendChild(td3B);
 				
 				row.appendChild(td0);
 				row.appendChild(td1);
 				row.appendChild(td2);
-//				row.appendChild(td3);
 			
 				table.appendChild(row);
 			}
@@ -278,11 +268,6 @@ function keyCell(e) {
 	}
 }
 
-function seticon()
-{
-	browser.runtime.sendMessage({Action: "setIcon"});
-}
-
 function clickElement(el) {
 	if (el.parentElement.parentElement.id === "searchResults") {
 		switch (el.cellIndex) {
@@ -295,14 +280,14 @@ function clickElement(el) {
 				browser.runtime.sendMessage({Action: "copy", source: "searchResults", list: (el.cellIndex == 1 ? "userList" : "passwordList"), id: el.parentNode.rowIndex });
 				if (sessionStorage.x)
 					clearInterval(sessionStorage.x)
-				countdown(10);
+				countdown(parseInt(localStorage.getItem("countDown")));
 				break;
 		}
 	} else { // webResults
 		browser.runtime.sendMessage({Action: "copy", source: "webResults", list: (el.cellIndex == 0 ? "userList" : "passwordList"), id: el.parentNode.rowIndex });
 		if (sessionStorage.x)
 			clearInterval(sessionStorage.x)
-		countdown(10);
+		countdown(parseInt(localStorage.getItem("countDown")));
 	}
 }
 

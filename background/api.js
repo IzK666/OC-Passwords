@@ -41,6 +41,7 @@ function fetchAll(database, callback = null) {
 				}
 			}
 			database["vault"] = tempLoginList;
+			//processDatabase();
 			if (callback)
 				callback();
 		}
@@ -89,6 +90,19 @@ function jsonToObject(json) {
 		}
 	}
 	delete object["properties"];
+	delete object["category"];
+	delete object["creation_date"];
+	delete object["datechanged"];
+	delete object["deleted"];
+	delete object["length"];
+	delete object["lower"];
+	delete object["notes"];
+	delete object["number"];
+	delete object["special"];
+	delete object["strength"];
+	delete object["upper"];
+	delete object["user_id"];
+	object["url"] = processURL(object["address"]);
 	return object;
 }
 

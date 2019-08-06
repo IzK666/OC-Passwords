@@ -1,23 +1,33 @@
 {
 	"manifest_version": 2,
-	"name": "OC-Passwords",
-	"version": "1.00",
 
+	"name": "OwnCloud Passwords Client",
+	"short_name": "OC Passwords",
+	"version": "1.78",
 	"description": "Access your Owncloud Passwords.",
-	"icons": { "256": "images/icon_white.png" },
+
+	"icons": { "256": "images/icon_grey.png" },
+
 	"background": {
 		"scripts": [
 			"background/background.js",
 			"background/functions.js",
 			"background/api.js",
-			"background/url.js"
-		],
-		"persistent": false
+			"background/url.js",
+			"background/TLD.js"
+		]
 	},
+
 	"browser_action": {
-		"default_icon": "images/icon_white.png",
+		"default_icon": "images/icon_grey.png",
 		"default_popup": "app/main.html"
 	},
+
+	"options_ui": {
+		"page": "options/options.html",
+		"open_in_tab": false
+	},
+
 	"permissions": [
 	 	"https://*/",
 		"activeTab",
@@ -25,5 +35,13 @@
 		"notifications",
 		"storage",
 		"tabs"
-	]
+	],
+
+	"commands": {
+		"_execute_browser_action": {
+			"suggested_key": {
+				"default": "Ctrl+Shift+F"
+			}
+		}
+	}
 }
