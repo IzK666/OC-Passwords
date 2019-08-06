@@ -14,6 +14,9 @@ To do:
 
 Changelog:
 
+1.82
+	Fix: Last password stored not recognized when entering on the url
+
 1.81
 	Added button to logout
 	Added option to logout after user defined idle time (popup not used)

@@ -23,6 +23,8 @@ function processPasswords(inputURL) {
 		while (host === database.vault[n].url) {
 			results.push({'website': database.vault[n].website, 'user': database.vault[n].loginname, 'pass': database.vault[n].pass});
 			n++;
+			if (n >= database.vault.length)
+				break;
 		}
 	}
 	if (results.length > 0) {
