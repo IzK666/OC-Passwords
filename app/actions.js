@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 	load();
 
-	document.getElementById("form").addEventListener("keyup", function(e){
+	document.getElementById("loginForm").addEventListener("keyup", function(e){
 		var keyCode = e.keyCode;
 		if (keyCode == 13){ // Key Enter
 			save();
@@ -10,51 +10,94 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	});
 
-	document.getElementById("inputSearch").addEventListener("keyup", function(e){
+	document.getElementById("searchText").addEventListener("keyup", function(e){
 		var keyCode = e.keyCode;
 		if (keyCode == 27){ // Key Escape. Not working in Firefox.
-			if (document.getElementById("inputSearch").value == "")
+			if (document.getElementById("searchText").value == "")
 				window.close();
 			else
 				searchRemove();
 		}
 	});
 
-	document.getElementById("save").addEventListener("click", function(){
+//	*************************************************************
+//	Login page
+
+	document.getElementById("loginHost").addEventListener("change", function(){
+		hostChanged();
+	});
+
+	document.getElementById("loginSave").addEventListener("click", function(){
 		save();
 	});
 
-	document.getElementById("cancel").addEventListener("click", function(){
+	document.getElementById("loginCancel").addEventListener("click", function(){
 		window.close();
 	});
+//	*************************************************************
 
-/*	document.getElementById("buttonIcon").addEventListener("click", function(){
-		seticon();
+//	*************************************************************
+//	Main page. Search related
+
+	document.getElementById("searchText").addEventListener("input", function(){
+		searchChanged();
 	});
 
-	document.getElementById("buttonSettings").addEventListener("click", function(){
-		viewSettings();
-	});*/
-
-	document.getElementById("buttonRefresh").addEventListener("click", function(){
-		refresh();
-		window.close();
-	});
-
-	document.getElementById("cancelSearch").addEventListener("click", function(){
+	document.getElementById("searchCancel").addEventListener("click", function(){
 		searchRemove();
 	});
+//	*************************************************************
 
-	document.getElementById("logout").addEventListener("click", function(){
+//	*************************************************************
+//	Main page. Buttons related.
+
+	document.getElementById("controlNewPass").addEventListener("click", function(){
+		viewNew();
+	});
+
+	document.getElementById("controlRefresh").addEventListener("click", function(){
+		refresh();
+	});
+
+	document.getElementById("controlLogout").addEventListener("click", function(){
 		logout();
 	});
 
-	document.getElementById("host").addEventListener("change", function(){
-			hostChanged();
+//	*************************************************************
+//	New password page
+
+	document.getElementById("npSave").addEventListener("click", function(){
+		create();
 	});
 
-	document.getElementById("inputSearch").addEventListener("input", function(){
-			searchChanged();
+	document.getElementById("npBack").addEventListener("click", function(){
+		viewPasswords();
 	});
+
+	document.getElementById("npReset").addEventListener("click", function(){
+		document.getElementById("npList").value = "!@#$%^&*()_+~[]{}:;?<>,./-=";
+	});
+
+	document.getElementById("npGenerate").addEventListener("click", function(){
+		useGenerator();
+	});
+
+	document.getElementById("npWebsite").addEventListener("change", function(){
+		trimValue("npWebsite");
+	});
+
+	document.getElementById("npAddress").addEventListener("change", function(){
+		addressChanged();
+	});
+
+	document.getElementById("npAddress").addEventListener("focus", function(){
+		document.getElementById("npAddressWarning").style.display = "none";
+	});
+
+	document.getElementById("npUser").addEventListener("change", function(){
+		trimValue("npUser");
+	});
+
+//	*************************************************************
 
 });

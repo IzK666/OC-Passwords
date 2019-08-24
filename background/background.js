@@ -27,6 +27,10 @@ browser.runtime.onMessage.addListener(
 				sendResponse({passwords: (database.passwords ? database.passwords.userList : null)});
 				break;
 
+			case "createPassword":
+				createNew(database, request.Pass);
+				break;
+
 			case "refresh":
 				fetchAll(database, loggedIn);
 				break;

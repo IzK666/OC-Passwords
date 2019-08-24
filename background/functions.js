@@ -61,6 +61,15 @@ function loggedIn() {
 	}
 }
 
+function logout() {
+	delete database.Login;
+	delete database.Pass;
+	delete database.vault;
+	delete database.search;
+	browser.browserAction.setIcon({path: "images/icon_grey.png"});
+	browser.browserAction.setBadgeText({text: ""});
+}
+
 function toClipboard(val="") {
 	let body = document.getElementsByTagName("body")[0];
 	let item = document.createElement("input");
@@ -83,7 +92,6 @@ function clearClipboard() {
 	document.execCommand('copy');
 }
 
-// Clear clipboard after certain time
 function countdown(time) {
 	sessionStorage.timer = time;
 	if (sessionStorage.x)
@@ -103,6 +111,18 @@ function countdown(time) {
 
 }
 
+function enableAlarm() {
+	let time = 60;
+	if (localStorage.getItem("idleH") && localStorage.getItem("idleM"))
+		time = parseInt(localStorage.getItem("idleH")) * 60 + parseInt(localStorage.getItem("idleM"));
+	browser.alarms.create("idle", {delayInMinutes: time} );
+}
+
+function searchRemove() {
+	delete database.search;
+	localStorage.removeItem("searchword");
+}
+
 function dynamicSort(property) {
 	var sortOrder = 1;
 	if(property[0] === "-") {
@@ -115,7 +135,7 @@ function dynamicSort(property) {
 	}
 	else
 		caseSensitive = 1;
-	
+
 	return function (a,b) {
 		if (caseSensitive == 0)
 			var result = (a[property].toLowerCase() < b[property].toLowerCase()) ? -1 : (a[property].toLowerCase() > b[property].toLowerCase()) ? 1 : 0;
@@ -143,25 +163,4 @@ function dynamicSortMultiple() {
         }
         return result;
     }
-}
-
-function searchRemove() {
-	delete database.search;
-	localStorage.removeItem("searchword");
-}
-
-function enableAlarm() {
-	let time = 60;
-	if (localStorage.getItem("idleH") && localStorage.getItem("idleM"))
-		time = parseInt(localStorage.getItem("idleH")) * 60 + parseInt(localStorage.getItem("idleM"));
-	browser.alarms.create("idle", {delayInMinutes: time} );
-}
-
-function logout() {
-	delete database.Login;
-	delete database.Pass;
-	delete database.vault;
-	delete database.search;
-	browser.browserAction.setIcon({path: "images/icon_grey.png"});
-	browser.browserAction.setBadgeText({text: ""});
 }

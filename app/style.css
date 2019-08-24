@@ -1,6 +1,6 @@
 body {
-	margin:			10px 10px;
-	min-width:		200px;
+	margin:			10px 15px 10px 10px;
+	min-width:		250px;
 }
 
 h1 {
@@ -19,7 +19,7 @@ table {
 	cursor:				default;
 }
 
-#infoDB {
+#control {
 	border-spacing:		2px 0px;
 }
 
@@ -86,4 +86,26 @@ button, input[type=button] {
 
 #save, #cancel {
 	width:				70px;
+}
+
+
+#rowGenerator {
+	border-spacing:		10px;
+}
+
+.npField100 {
+	width:				100%;
+}
+
+.npField75 {
+	width:				75%;
+}
+
+.npField25 {
+	width:				25%;
+}
+
+textarea {
+	height:				50px;
+	width:				100%;
 }

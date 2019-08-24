@@ -171,13 +171,13 @@ function trimDomain(host, options=2) {
 	// Options allows you to choose the parts to remove:
 	//	1: Remove TLD
 	//	2: Remove subdomain
-	
+
 	// Example: getDomain("www.google.com", 1|2)
 
 	var splittedURL = host.split(".");
 	if (splittedURL[0].match("^www\d?$"))
 		splittedURL.splice(0, 1);
-	if (splittedURL.length > 5)
+/*	if (splittedURL.length > 5)
 		if (isTLD(splittedURL[splittedURL.length-5] + "." + splittedURL[splittedURL.length-4] + "." + splittedURL[splittedURL.length-3] + "." + splittedURL[splittedURL.length-2] + "." + splittedURL[splittedURL.length-1], 4, 0, TLD4.length)) {
 			switch (options) {
 				case 3:
@@ -224,7 +224,7 @@ function trimDomain(host, options=2) {
 					return splittedURL.join(".");
 					break;
 			}
-		}
+		}*/
 	if (splittedURL.length > 2)
 		if (isTLD(splittedURL[splittedURL.length-2] + "." + splittedURL[splittedURL.length-1], 1, 0, TLD1.length)) {
 			switch (options) {

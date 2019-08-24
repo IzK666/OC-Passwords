@@ -8,17 +8,17 @@
 	<script src="script.js"></script>
 	<link rel="stylesheet" href="style.css">
 	<body>
-		<div id="divSettings">
+		<div id="divLogin">
 			<h3>Enter your ownCloud credentials:</h3>
-			<form id="form">
+			<form id="loginForm">
 				<table align="center" class="equalDivide">
 					<tr>
 						<td>Host:</td>
 						<td>
-							<input type="text" id="host" placeholder="https://example.com/owncloud" />
+							<input type="text" id="loginHost" placeholder="https://example.com/owncloud" />
 						</td>
 					</tr>
-					<tr id="hostWarning">
+					<tr id="loginHostWarning">
 						<td colspan=2 class="warning">
 							Warning:<br>This connection will be unencrypted and<br>expose all your passwords on the network!
 						</td>
@@ -26,18 +26,18 @@
 					<tr>
 						<td>User:</td>
 						<td>
-							<input type="text" id="user" />
+							<input type="text" id="loginUser" />
 						</td>
 					</tr>
 					<tr>
 						<td>Password:</td>
 						<td>
-							<input type="password" id="pass" />
+							<input type="password" id="loginPass" />
 						</td>
 					</tr>
 					<tr>
 						<td colspan="2">
-							<input type="checkbox" id="remember">
+							<input type="checkbox" id="loginRemember">
 							<label for="remember">Remember username and password</label></input>
 						</td>
 					</tr>
@@ -51,8 +51,8 @@
 							<table align="center" class="equalDivide">
 								<tr>
 									<td colspan=2 align="center">
-										<input type="button" id="save" value="Save">
-										<input type="button" id="cancel" value="Cancel">
+										<input type="button" id="loginSave" value="Save">
+										<input type="button" id="loginCancel" value="Cancel">
 									</td>
 								</tr>
 							</table>
@@ -68,13 +68,13 @@
 				<tr>
 					<td>
 						<!--button type="button" id="buttonSearch">Search</button-->
-						<img id="buttonSearch" src="/images/find.png" style="width:24px;height:24px;">
+						<img src="/images/find.png" style="width:24px;height:24px;">
 					</td>
 					<td colspan=3>
-						<input type="text" id="inputSearch" placeholder="Search for passwords..." />
+						<input type="text" id="searchText" placeholder="Search for passwords..." />
 					</td>
 					<td>
-						<img id="cancelSearch" src="/images/cancel.png" style="width:16px;height:16px;">
+						<img id="searchCancel" src="/images/cancel.png" style="width:16px;height:16px;">
 					</td>
 				</tr>
 				<tr id="searchWarning">
@@ -84,21 +84,90 @@
 				</tr>
 			</table>
 			<hr>
-			<table id="infoDB">
+			<table id="control">
 				<tr>
 					<td>
-						<span class="infoDB" id="textTotalLogins">0 Logins in Database</span>
+						<span id="textTotalLogins" class="infoDB">0 items</span>
 					</td>
 					<td>
-						<button id="buttonRefresh" tabindex="-1"><span class="infoDB">Refresh</span></button>
+						<button id="controlNewPass" tabIndex="-1"><span class="infoDB">Create new</span></button>
 					</td>
 					<td>
-						<img id="logout" src="/images/power_black.png" alt="Logout" style="width:18px;height:18px;opacity:0.4">
+						<button id="controlRefresh" tabindex="-1"><span class="infoDB">Refresh</span></button>
+					</td>
+					<td>
+						<img id="controlLogout" src="/images/power_black.png" alt="Logout" style="width:18px;height:18px;opacity:0.4">
 					</td>
 				</tr>
 			</table>
 		</div>
 		<div id="divCountdown">
+		</div>
+		<div id="divNew">
+			<table id="newPass">
+				<tr>
+					<td>
+						<input type="text" id="npAddress" class="npField100" placeholder="Full URL (optional)">
+					</td>
+				</tr>
+				<tr id="npAddressWarning">
+					<td class="warning">
+						Fill in a valid URL.<br>This field is optional and can be left blank
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="text" id="npWebsite" class="npField100" placeholder="Site.com or Name Inc.">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="text" id="npUser" class="npField100" placeholder="Login name or e-mail">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="text" id="npPass" class="npField100" placeholder="Password">
+					</td>
+				</tr>
+				<tr id="rowGenerator">
+					<td>
+						<input type="checkbox" id="npLower" checked>Lowercase characters</input><br>
+						<input type="checkbox" id="npUpper" checked>Uppercase characters</input><br>
+						<input type="checkbox" id="npNumber" checked>Numbers</input><br>
+						<input type="checkbox" id="npSpecial" checked>Punctuation marks</input><br>
+						<input type="text" id="npList" class="npField75" value="!@#$%^&*()_+~[]{}:;?<>,./-="></input>
+						<input type="button" id="npReset" value="Reset" />
+						<br>
+						<input type="number" id="npLength" class="npField25" value="30" min="1"></input> characters<br>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<button id="npGenerate">Generate password</button>
+					</td>
+				</tr>
+					<td>
+						<textarea id="npNotes" placeholder="Notes (Optional)"></textarea>
+					</td>
+				<tr>
+				</tr>
+				<tr>
+				</tr>
+				<tr>
+					<td>
+						<button id="npSave">Add password</button>
+					</td>
+				</tr>
+				<tr id="npSaveWarning">
+					<td id="npSaveWarningText" class="warning" />
+				</tr>
+				<tr>
+					<td>
+						<button id="npBack">Back</button>
+					</td>
+				</tr>
+			</table>
 		</div>
 	</body>
 </html>

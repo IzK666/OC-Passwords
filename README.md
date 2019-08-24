@@ -7,15 +7,15 @@ Changes from original add-on:
 * Includes a search function. Clicking on the url, open the link in a new tab.
 * Ability to copy into clipboard both, users and passwords. After 10 seconds, clipboard is cleared. On firefox, is replaced with a blank space: ' '.
 * Shortcut Ctrl+Shift+F to open the interface.
-
-To do:
-* Option to create and/or update passwords.
-
+* Create new passwords (no login detection)
 
 Changelog:
 
+1.83
+	Create new passwords from the plugin
+
 1.82
-	Fix: Last password stored not recognized when entering on the url
+	Bug fixed
 
 1.81
 	Added button to logout
