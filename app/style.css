@@ -89,8 +89,8 @@ button, input[type=button] {
 }
 
 
-#rowGenerator {
-	border-spacing:		10px;
+#cellGenerator {
+	padding:			0 10px 0 10px;
 }
 
 .npField100 {
@@ -106,6 +106,6 @@ button, input[type=button] {
 }
 
 textarea {
-	height:				50px;
+	height:				100px;
 	width:				100%;
 }

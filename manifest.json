@@ -3,7 +3,7 @@
 
 	"name": "OwnCloud Passwords Client",
 	"short_name": "OC Passwords",
-	"version": "1.83",
+	"version": "1.84",
 	"description": "Access your Owncloud Passwords.",
 
 	"icons": { "256": "images/icon_grey.png" },

@@ -4,12 +4,9 @@ window.browser = (function () {
 
 function load() {
 	// Load login div
-	if (localStorage.getItem("host"))
-		document.getElementById("loginHost").value = localStorage.getItem("host");
-	if (localStorage.getItem("user"))
-		document.getElementById("loginUser").value = localStorage.getItem("user");
-	if (localStorage.getItem("pass"))
-		document.getElementById("loginPass").value = localStorage.getItem("pass");
+	document.getElementById("loginHost").value = localStorage.getItem("host");
+	document.getElementById("loginUser").value = localStorage.getItem("user");
+	document.getElementById("loginPass").value = localStorage.getItem("pass");
 	document.getElementById("loginRemember").checked = (parseInt(localStorage.getItem("remember")) ? true : false);
 
 	hostChanged();
@@ -172,9 +169,6 @@ function cancel() {
 	if (document.getElementById("loginRemember").checked) {
 		document.getElementById("loginUser").value = localStorage.getItem("user");
 		document.getElementById("loginPass").value = localStorage.getItem("pass");
-	}
-	else {
-		//load from somewhere else
 	}
 	window.close();
 }
@@ -349,7 +343,39 @@ function logout() {
 
 //	*************************************************************
 
-function create() {
+function loadNew() {
+	document.getElementById("npWebsite").value = localStorage.getItem("npWebsite");
+	document.getElementById("npAddress").value = localStorage.getItem("npAddress");
+	document.getElementById("npUser").value = localStorage.getItem("npUser");
+	document.getElementById("npPass").value = localStorage.getItem("npPass");
+	document.getElementById("npNotes").value = localStorage.getItem("npNotes");
+	if (localStorage.getItem("npList"))
+		document.getElementById("npList").value = localStorage.getItem("npList");
+	document.getElementById("npLength").value = (localStorage.getItem("npLength")) ? localStorage.getItem("npLength") : 30;
+}
+
+function resetNew() {
+		document.getElementById("npWebsite").value = "";
+		document.getElementById("npAddress").value = "";
+		document.getElementById("npUser").value = "";
+		document.getElementById("npPass").value = "";
+		document.getElementById("npNotes").value = "";
+		document.getElementById("npLower").checked = 1;
+		document.getElementById("npUpper").checked = 1;
+		document.getElementById("npNumber").checked = 1;
+		document.getElementById("npSpecial").checked = 1;
+		document.getElementById("npList").value = "!@#$%^&*()_+~[]{}:;?<>,./-=";
+		document.getElementById("npLength").value = 30;
+		localStorage.removeItem("npWebsite");
+		localStorage.removeItem("npAddress");
+		localStorage.removeItem("npUser");
+		localStorage.removeItem("npPass");
+		localStorage.removeItem("npList");
+		localStorage.removeItem("npLength");
+		localStorage.removeItem("npNotes");
+}
+
+function createNew() {
 	let newLogin = document.getElementById("npUser").value;
 	let newPass = document.getElementById("npPass").value;
 	let newWeb = document.getElementById("npWebsite").value;
@@ -378,7 +404,7 @@ function create() {
 
 function useGenerator() {
 	let gpo = document.getElementById("rowGenerator");
-	if (gpo.style.display === "block") { // Generate a password
+	if (gpo.style.display === "table-row") { // Generate a password
 		let gLow = document.getElementById("npLower").checked;
 		let gUp = document.getElementById("npUpper").checked;
 		let gNum = document.getElementById("npNumber").checked;
@@ -386,7 +412,7 @@ function useGenerator() {
 		let gLength = parseInt(document.getElementById("npLength").value);
 		document.getElementById("npPass").value= generatepw(gLow, gUp, gNum, gSpecial, gLength);
 	} else { // Show Generator
-		gpo.style.display = "block";
+		gpo.style.display = "table-row";
 	}
 }
 

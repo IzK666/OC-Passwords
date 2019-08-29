@@ -121,6 +121,7 @@ browser.tabs.onActivated.addListener( function(info) {
 	browser.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
 		try {
 			processPasswords(tabs[0].url);
+			localStorage.setItem("currentUrl", tabs[0].url);
 		} catch (err) {}
 	});
 });
