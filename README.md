@@ -11,6 +11,9 @@ Changes from original add-on:
 
 Changelog:
 
+1.85
+	Small internal improvements
+
 1.84
 	New password form keeps the data when the interface is closed
 	Added button to get the current url

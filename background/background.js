@@ -16,7 +16,7 @@ browser.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
 		switch (request.Action) {
 			case "login":
-				login(request.Host, request.User, request.Pass);
+				sendResponse(login(request.Host, request.User, request.Pass));
 				break;
 
 			case "logged":

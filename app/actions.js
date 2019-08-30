@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	document.getElementById("loginForm").addEventListener("keyup", function(e){
 		var keyCode = e.keyCode;
 		if (keyCode == 13){ // Key Enter
-			save();
+			login();
 		} else if (keyCode == 27){ // Key escape
 			window.close();
 		}
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 
 	document.getElementById("loginSave").addEventListener("click", function(){
-		save();
+		login();
 	});
 
 	document.getElementById("loginCancel").addEventListener("click", function(){

@@ -6,7 +6,8 @@ function load() {
 	// Load login div
 	document.getElementById("loginHost").value = localStorage.getItem("host");
 	document.getElementById("loginUser").value = localStorage.getItem("user");
-	document.getElementById("loginPass").value = localStorage.getItem("pass");
+	if (localStorage.getItem("login"))
+		document.getElementById("loginPass").placeholder = "******";
 	document.getElementById("loginRemember").checked = (parseInt(localStorage.getItem("remember")) ? true : false);
 
 	hostChanged();
@@ -142,25 +143,31 @@ function hostChanged() {
 	}
 }
 
-function save() {
+function login() {
 	// Save FORM values
 	let Host = document.getElementById("loginHost").value;
 	let User = document.getElementById("loginUser").value;
-	let Pass = document.getElementById("loginPass").value
+	let Pass = document.getElementById("loginPass").value;
 	localStorage.setItem("host", Host);
 	localStorage.setItem("remember", (document.getElementById("loginRemember").checked ? 1 : 0));
 	if (document.getElementById("loginRemember").checked) {
 		localStorage.setItem("user", User);
-		localStorage.setItem("pass", Pass);
 	}
 	else {
 		localStorage.removeItem("user");
-		localStorage.removeItem("pass");
+		localStorage.removeItem("login");
 	}
 	window.close();
 
 	// Send values to background script
-	browser.runtime.sendMessage({Action: "login", Host, User, Pass});
+	if (document.getElementById("loginRemember").checked) {
+		browser.runtime.sendMessage({Action: "login", Host, User, Pass}, function(response) {
+			localStorage.setItem("code", response);
+		});
+	}
+	else {
+		browser.runtime.sendMessage({Action: "login", Host, User, Pass});
+	}
 }
 
 function cancel() {
@@ -168,7 +175,6 @@ function cancel() {
 	document.getElementById("loginRemember").checked = (parseInt(localStorage.getItem("remember")) ? true : false);
 	if (document.getElementById("loginRemember").checked) {
 		document.getElementById("loginUser").value = localStorage.getItem("user");
-		document.getElementById("loginPass").value = localStorage.getItem("pass");
 	}
 	window.close();
 }

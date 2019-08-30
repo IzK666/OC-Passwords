@@ -16,14 +16,8 @@ function start() {
 
 
 	// Check User and Password localStorage variables
-	if (localStorage.getItem("user") && localStorage.getItem("pass")) {
-		login (localStorage.getItem("host"), localStorage.getItem("user"), localStorage.getItem("pass"));
-	}
-	else if (sessionStorage.getItem("user") && sessionStorage.getItem("pass")) { // shouldn't run ever!
-		login (localStorage.getItem("host"), sessionStorage.getItem("user"), sessionStorage.getItem("pass"));
-	}
-	else {
-//		console.log("Started. Missing login data.");
+	if (localStorage.getItem("user") && localStorage.getItem("code")) {
+		login (localStorage.getItem("host"), localStorage.getItem("code"));
 	}
 
 	localStorage.removeItem("searchword"); // Remove search
@@ -31,17 +25,18 @@ function start() {
 	browser.browserAction.setIcon({path: "images/icon_grey.png"});
 }
 
-function login(Host, User, Pass) {
+function login(Host, User, Pass=null) {
 	// retrieve passwords from server
+	// if Pass is null, asume that User is Login
 	localStorage.removeItem("vault");
-	let Login = btoa(User + ":" + Pass);
+	let Login = (Pass == null) ? User : btoa(User + ":" + Pass);
 	database = {
 		Host,
 		User,
-		Pass,
 		Login
 	};
 	fetchAll(database, loggedIn);
+	return Login;
 }
 
 function loggedIn() {
@@ -63,7 +58,6 @@ function loggedIn() {
 
 function logout() {
 	delete database.Login;
-	delete database.Pass;
 	delete database.vault;
 	delete database.search;
 	browser.browserAction.setIcon({path: "images/icon_grey.png"});
