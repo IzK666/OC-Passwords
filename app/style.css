@@ -1,6 +1,6 @@
 body {
-	margin:			10px 15px 10px 10px;
-	min-width:		250px;
+	margin:				10px 15px 10px 10px;
+	width:				300px;
 }
 
 h1 {
@@ -14,9 +14,16 @@ div {
 }
 
 table {
-	width:				100%;
+	width:				90%;
 	border-spacing:		2px 12px;
-	cursor:				default;
+}
+
+input {
+	border:				1px ridge #BBB;
+}
+
+select {
+	width:				100%;
 }
 
 #control {
@@ -90,19 +97,8 @@ button, input[type=button] {
 
 
 #cellGenerator {
-	padding:			0 10px 0 10px;
-}
-
-.npField100 {
-	width:				100%;
-}
-
-.npField75 {
-	width:				75%;
-}
-
-.npField25 {
-	width:				25%;
+	padding:			0 0 0 15px;
+	border-spacing:		0 5px;
 }
 
 textarea {

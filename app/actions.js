@@ -27,6 +27,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		hostChanged();
 	});
 
+	document.getElementById("loginGo").addEventListener("click", function(){
+		access();
+	});
+
 	document.getElementById("loginSave").addEventListener("click", function(){
 		login();
 	});
@@ -103,17 +107,17 @@ document.addEventListener('DOMContentLoaded', function() {
 		localStorage.setItem("npAddress", document.getElementById("npAddress").value);
 	});
 
-	document.getElementById("npAddress").addEventListener("focus", function(){
-		document.getElementById("npAddressWarning").style.display = "none";
-	});
-
 	document.getElementById("npUser").addEventListener("change", function(){
 		trimValue("npUser");
 		localStorage.setItem("npUser", document.getElementById("npUser").value);
 	});
 
-	document.getElementById("npPass").addEventListener("change", function(){
+	document.getElementById("npPass").addEventListener("focusout", function(){
 		localStorage.setItem("npPass", document.getElementById("npPass").value);
+	});
+
+	document.getElementById("npPass").addEventListener("focus", function(){
+		this.select();
 	});
 
 	document.getElementById("npNotes").addEventListener("change", function(){

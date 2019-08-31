@@ -2,9 +2,8 @@ function fetchSingle(database, id) {
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
-			// Typical action to be performed when the document is ready:
-			database["item"] = jsonToObject(JSON.parse(xhr.response));
-			browser.browserAction.setBadgeText({text: "Ok"});
+			database.vault.push(jsonToObject(JSON.parse(xhr.response)));
+			database.vault.sort(dynamicSort("url")); // Sort the database
 		}
 	};
 	xhr.open("GET", database.Host + "/index.php/apps/passwords/api/0.1/passwords/" + id);
@@ -23,10 +22,10 @@ function fetchAll(database, callback=null) {
 	xhr.timeout = 5000;
 
 	xhr.ontimeout = function () {
-		notificationError("Connection to server timed out!");
+		notificationError("Connection to server timed out!\n\nMaybe the certificate is self signed.\nIf that's the case and you TRUST/OWN the server, you have to add an excepcion manually\nAccess the OC website and follow the instructions (Advanced > add exception > Confirm)");
 	};
 	xhr.onerror = function () {
-		notificationError("The request could not be sent!\n\nIf the certificate is self signed, you have to add it: Enter the OC website");
+		notificationError("The request could not be sent!\n\nMaybe the certificate is self signed.\nONLY if you TRUST/OWN the server, access the OC website and follow the instructions:\n(Advanced > add exception > Confirm)");
 	};
 	xhr.onload = function () {
 		if (xhr.status == 401) {
@@ -51,7 +50,7 @@ function fetchAll(database, callback=null) {
 	xhr.send();
 }
 
-function fetchCategories(database) {
+function fetchCategories(database, callback=null) {
 	let categoryList;
 	var xhr = new XMLHttpRequest();
 	xhr.open("GET", database.Host + "/index.php/apps/passwords/api/0.1/categories");
@@ -80,6 +79,8 @@ function fetchCategories(database) {
 			}
 			if (tempCategoryList.length > 0)
 				database["categories"] = tempCategoryList;
+			if (callback)
+				callback();
 		}
 		else if (xhr.status != 200) {
 			notificationError("The request couldn't be answered.");
@@ -88,7 +89,7 @@ function fetchCategories(database) {
 	xhr.send();
 }
 
-function createNew(database, data) {
+function createNew(database, data, callback=null) {
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", database.Host + "/index.php/apps/passwords/api/0.1/passwords");
 	xhr.setRequestHeader("Authorization", "Basic " + database.Login);
@@ -105,7 +106,10 @@ function createNew(database, data) {
 			notificationError("User or password incorrect.");
 		}
 		else if (xhr.status == 200) {
-			fetchAll(database); //Update list once created the new password
+			let item = JSON.parse(xhr.response);
+			fetchSingle(database, item.id); // Add the new item to the list
+			if (callback)
+				callback();
 		}
 		else if (xhr.status != 200) {
 			notificationError("The request couldn't be answered.");
@@ -152,7 +156,6 @@ function jsonToObject(json) {
 		}
 	}
 	delete object["properties"];
-	delete object["category"];
 	delete object["creation_date"];
 	delete object["datechanged"];
 	delete object["deleted"];
@@ -170,6 +173,11 @@ function jsonToObject(json) {
 
 function notificationError(body) {
 	// Shows a predefined notification with some customized body.
-	var notification = new Notification('Failed to get passwords', { body: body, icon: "images/icon_black.png" });
-	setTimeout(notification.close.bind(notification), 5000);
+	browser.notifications.create("0CP3rr", {
+		type: "basic",
+		title: "Failed to get passwords",
+		iconUrl: "/images/icon_black.png",
+		message: body
+	});
+	setTimeout(function(){browser.notifications.clear("0CP3rr");}, 5000);
 }

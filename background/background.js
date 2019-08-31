@@ -9,6 +9,7 @@ browser.runtime.onInstalled.addListener(function() {
 });
 
 browser.runtime.onStartup.addListener(function() {
+	console.log("Start");
 	start();
 });
 
@@ -16,7 +17,10 @@ browser.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
 		switch (request.Action) {
 			case "login":
-				sendResponse(login(request.Host, request.User, request.Pass));
+				if (request.User)
+					sendResponse(login(request.Host, request.User, request.Pass));
+				else
+					login(request.Host, request.Code);
 				break;
 
 			case "logged":
@@ -24,7 +28,7 @@ browser.runtime.onMessage.addListener(
 				break;
 
 			case "getPasswords":
-				sendResponse({passwords: (database.passwords ? database.passwords.userList : null)});
+				sendResponse({ passwords: (database.passwords ? database.passwords.userList : null) });
 				break;
 
 			case "createPassword":
@@ -48,6 +52,11 @@ browser.runtime.onMessage.addListener(
 				var a = document.createElement("a");
 				browser.tabs.create({ url: database.search[request.list][request.id] });
 				searchRemove();
+				break;
+
+			case "openUrl":
+				var a = document.createElement("a");
+				browser.tabs.create({ url: request.url });
 				break;
 
 			case "fill":
@@ -82,10 +91,13 @@ browser.runtime.onMessage.addListener(
 			case "setIcon":
 				if (database.vault)
 					if (localStorage.getItem("icon"))
-						browser.browserAction.setIcon({path: "images/" + localStorage.getItem("icon") + ".png"});
+						browser.browserAction.setIcon({ path: "images/" + localStorage.getItem("icon") + ".png" });
 					else
-						browser.browserAction.setIcon({path: "images/icon_black.png"});
+						browser.browserAction.setIcon({ path: "images/icon_black.png" });
 				break;
+
+			case "getCategories":
+				sendResponse((database.categories) ? database.categories : false);
 
 			case "reloadURLs":
 				processDatabase();
@@ -102,7 +114,7 @@ browser.runtime.onMessage.addListener(
 				break;
 
 			default:
-				sendResponse({result: "Action not recognized"});
+				sendResponse({ result: "Action not recognized" });
 				break;
 		}
 	}
@@ -118,18 +130,13 @@ browser.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 });
 
 browser.tabs.onActivated.addListener( function(info) {
-	browser.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
+	browser.tabs.query({ 'active': true, 'lastFocusedWindow': true}, function (tabs) {
 		try {
 			processPasswords(tabs[0].url);
 			localStorage.setItem("currentUrl", tabs[0].url);
 		} catch (err) {}
 	});
 });
-
-/*browser.runtime.onSuspend.addListener(function() {
-	localStorage.removeItem("db");
-	notificationError("suspend");
-});*/
 
 browser.alarms.onAlarm.addListener(function(alarm) {
 	logout();

@@ -6,13 +6,12 @@ function load() {
 	// Load login div
 	document.getElementById("loginHost").value = localStorage.getItem("host");
 	document.getElementById("loginUser").value = localStorage.getItem("user");
-	if (localStorage.getItem("login"))
-		document.getElementById("loginPass").placeholder = "******";
+	document.getElementById("loginPass").placeholder = (localStorage.getItem("code")) ? "******" : "";
 	document.getElementById("loginRemember").checked = (parseInt(localStorage.getItem("remember")) ? true : false);
 
 	hostChanged();
 
-	browser.runtime.sendMessage({ Action: "logged" }, function(response) {
+	browser.runtime.sendMessage({ Action: "logged"}, function(response) {
 		// Background.js is logged (has passwords)
 		if (response) {
 			searchChanged();
@@ -21,7 +20,7 @@ function load() {
 			document.getElementById("searchText").focus();
 
 			// Get passwords for current page, if any.
-			browser.runtime.sendMessage({Action: "getPasswords" }, function(response2) {
+			browser.runtime.sendMessage({ Action: "getPasswords" }, function(response2) {
 				if (response2.passwords) {
 					document.getElementById("divPasswords").removeChild(document.getElementById("divLogins"));
 
@@ -68,7 +67,7 @@ function load() {
 			});
 
 			// Show countdown, if required
-			browser.runtime.sendMessage({Action: "getTimer" }, function(response3) {
+			browser.runtime.sendMessage({ Action: "getTimer"}, function(response3) {
 				if (response3)
 					countdown((response3-1));
 			});
@@ -80,12 +79,39 @@ function load() {
 			}
 
 			// reset Alarm
-			browser.runtime.sendMessage({Action: "alarm"});
+			browser.runtime.sendMessage({ Action: "alarm" });
 		}
 		else {
-			browser.browserAction.setBadgeText({text: ""});
+			browser.browserAction.setBadgeText({ text: "" });
 			viewLogin();
 			document.getElementById("loginHost").focus();
+		}
+	});
+
+	// Add categories
+	browser.runtime.sendMessage({ Action: "getCategories"}, function (response) {
+		if (response !== false) {
+			console.log(response);
+			var node = document.createElement("select");
+			node.setAttribute("id", "npCategory");
+			let o = document.createElement("option");
+			o.setAttribute("value", "0");
+			o.appendChild(document.createTextNode("-- No category --"));
+			node.appendChild(o);
+			for (let i = 0; i < response.length; i++) {
+				let o = document.createElement("option");
+				o.setAttribute("value", response[i].id);
+				o.setAttribute("label", response[i].name);
+				o.appendChild(document.createTextNode(response[i].name));
+				node.appendChild(o);
+			}
+			node.addEventListener("change", function(k){localStorage.setItem("npCat", document.getElementById("npCategory").value);}, false);
+			var cell = document.createElement("td");
+			cell.setAttribute("colspan", 3);
+			cell.appendChild(node);
+			var row = document.createElement("tr").appendChild(cell);
+			var ref = document.getElementById("npRef");
+			ref.parentNode.insertBefore(row, ref);
 		}
 	});
 }
@@ -103,16 +129,16 @@ function viewPasswords() {
 	document.getElementById("divLogin").style.display = "none";
 	document.getElementById("divPasswords").style.display = "table";
 	document.getElementById("divNew").style.display = "none";
-	document.getElementById("rowGenerator").style.display = "none";
+//	document.getElementById("rowGenerator").style.display = "none";
 }
 
 function viewNew() {
 	document.getElementById("divPasswords").style.display = "none";
 	document.getElementById("divLogin").style.display = "none";
 	document.getElementById("divNew").style.display = "table";
-	document.getElementById("npSaveWarning").style.display = "none";
 	addressChanged();
 	document.getElementById("npAddress").focus();
+
 }
 
 //	*************************************************************
@@ -143,11 +169,29 @@ function hostChanged() {
 	}
 }
 
+function access() {
+	let dest = document.getElementById("loginHost").value;
+	if (isURL(dest)) {
+		browser.runtime.sendMessage({ Action: "openUrl", url: dest });
+		window.close();
+	} else {
+		showWarning("loginHost", "The url is incorrect");
+	}
+}
+
 function login() {
 	// Save FORM values
 	let Host = document.getElementById("loginHost").value;
 	let User = document.getElementById("loginUser").value;
 	let Pass = document.getElementById("loginPass").value;
+
+	if (User.length == 0) {
+		showWarning("loginUser", "User can't be empty");
+		if ((Pass.length == 0) && (!localStorage.getItem("code")))
+			showWarning("loginPass", "Password can't be empty");
+			return;
+	}
+
 	localStorage.setItem("host", Host);
 	localStorage.setItem("remember", (document.getElementById("loginRemember").checked ? 1 : 0));
 	if (document.getElementById("loginRemember").checked) {
@@ -157,17 +201,27 @@ function login() {
 		localStorage.removeItem("user");
 		localStorage.removeItem("login");
 	}
-	window.close();
 
-	// Send values to background script
-	if (document.getElementById("loginRemember").checked) {
-		browser.runtime.sendMessage({Action: "login", Host, User, Pass}, function(response) {
-			localStorage.setItem("code", response);
-		});
+	if (Pass.length == 0) {
+		let Code = localStorage.getItem("code");
+		if (Code) {
+			browser.runtime.sendMessage({ Action: "login", Host, Code });
+		} else {
+			showWarning("loginPass", "Password can't be empty");
+			return;
+		}
+	} else {
+		// Send values to background script
+		if (document.getElementById("loginRemember").checked) {
+			browser.runtime.sendMessage({ Action: "login", Host, User, Pass}, function(response) {
+				localStorage.setItem("code", response);
+			});
+		}
+		else {
+			browser.runtime.sendMessage({ Action: "login", Host, User, Pass });
+		}
 	}
-	else {
-		browser.runtime.sendMessage({Action: "login", Host, User, Pass});
-	}
+	window.close();
 }
 
 function cancel() {
@@ -201,7 +255,6 @@ function search() {
 	var string = document.getElementById("searchText").value.trim();
 	var parent = document.getElementById("tableSearch");
 
-
 	// remove last search, if any
 	let destroy = document.getElementById("searchResults");
 	if (destroy)
@@ -213,7 +266,7 @@ function search() {
 
 	localStorage.setItem("searchword", string);
 
-	browser.runtime.sendMessage({Action: "search"}, function (response) {
+	browser.runtime.sendMessage({ Action: "search"}, function (response) {
 		if (response) {
 
 			let random = parseInt(Math.random() * 10 + 1);
@@ -277,7 +330,7 @@ function searchRemove() {
 	localStorage.removeItem("searchword");
 	document.getElementById("searchText").value = "";
 
-	browser.runtime.sendMessage({Action: "searchRemove"});
+	browser.runtime.sendMessage({ Action: "searchRemove" });
 }
 
 function clickCell(e) {
@@ -295,19 +348,19 @@ function clickElement(el) {
 	if (el.parentElement.parentElement.id === "searchResults") {
 		switch (el.cellIndex) {
 			case 0:
-				browser.runtime.sendMessage({Action: "openLink", source: "searchResults", list: "addressList", id: el.parentNode.rowIndex });
+				browser.runtime.sendMessage({ Action: "openLink", source: "searchResults", list: "addressList", id: el.parentNode.rowIndex });
 				window.close();
 				break;
 			case 1:
 			case 2:
-				browser.runtime.sendMessage({Action: "copy", source: "searchResults", list: (el.cellIndex == 1 ? "userList" : "passwordList"), id: el.parentNode.rowIndex });
+				browser.runtime.sendMessage({ Action: "copy", source: "searchResults", list: (el.cellIndex == 1 ? "userList" : "passwordList"), id: el.parentNode.rowIndex });
 				if (sessionStorage.x)
 					clearInterval(sessionStorage.x)
 				countdown(parseInt(localStorage.getItem("countDown")));
 				break;
 		}
 	} else { // webResults
-		browser.runtime.sendMessage({Action: "copy", source: "webResults", list: (el.cellIndex == 0 ? "userList" : "passwordList"), id: el.parentNode.rowIndex });
+		browser.runtime.sendMessage({ Action: "copy", source: "webResults", list: (el.cellIndex == 0 ? "userList" : "passwordList"), id: el.parentNode.rowIndex });
 		if (sessionStorage.x)
 			clearInterval(sessionStorage.x)
 		countdown(parseInt(localStorage.getItem("countDown")));
@@ -323,8 +376,17 @@ function leaveCell (e) {
 }
 
 function clickFill(e) {
-	browser.runtime.sendMessage({Action: "fill", id: this.parentNode.rowIndex });
+	browser.runtime.sendMessage({ Action: "fill", id: this.parentNode.rowIndex });
 	window.close();
+}
+
+function showWarning(node, warn) {
+	let span = document.createElement("span");
+	span.className = "warning";
+	span.innerHTML = warn;
+	let parent = document.getElementById(node).parentNode;
+	parent.appendChild(span);
+	setTimeout(function(){parent.removeChild(span);}, 4000);
 }
 
 //	*************************************************************
@@ -339,6 +401,8 @@ function refresh() {
 
 function logout() {
 	browser.runtime.sendMessage({ Action: "logout" });
+	resetNew();
+	searchRemove();
 	window.close();
 }
 
@@ -354,9 +418,10 @@ function loadNew() {
 	document.getElementById("npAddress").value = localStorage.getItem("npAddress");
 	document.getElementById("npUser").value = localStorage.getItem("npUser");
 	document.getElementById("npPass").value = localStorage.getItem("npPass");
+	if (document.getElementById("npCategory"))
+		document.getElementById("npCategory").value = (localStorage.getItem("npCat")) ? localStorage.getItem("npCat") : 0;
 	document.getElementById("npNotes").value = localStorage.getItem("npNotes");
-	if (localStorage.getItem("npList"))
-		document.getElementById("npList").value = localStorage.getItem("npList");
+	document.getElementById("npList").value = (localStorage.getItem("npList")) ? localStorage.getItem("npList"): "!@#$%^&*()_+~[]{}:;?<>,./-=";
 	document.getElementById("npLength").value = (localStorage.getItem("npLength")) ? localStorage.getItem("npLength") : 30;
 }
 
@@ -365,6 +430,8 @@ function resetNew() {
 		document.getElementById("npAddress").value = "";
 		document.getElementById("npUser").value = "";
 		document.getElementById("npPass").value = "";
+		if (document.getElementById("npCaegory"))
+			document.getElementById("npCategory").value = "0";
 		document.getElementById("npNotes").value = "";
 		document.getElementById("npLower").checked = 1;
 		document.getElementById("npUpper").checked = 1;
@@ -378,6 +445,7 @@ function resetNew() {
 		localStorage.removeItem("npPass");
 		localStorage.removeItem("npList");
 		localStorage.removeItem("npLength");
+		localStorage.removeItem("npCat");
 		localStorage.removeItem("npNotes");
 }
 
@@ -387,39 +455,50 @@ function createNew() {
 	let newWeb = document.getElementById("npWebsite").value;
 	let newAddress = document.getElementById("npAddress").value;
 	let newNotes = document.getElementById("npNotes").value;
-	if (newLogin.length == 0 || newPass.length == 0 || newWeb.length == 0) {
-		document.getElementById("npSaveWarningText").innerHTML = "Site, login and password are required"
-		document.getElementById("npSaveWarning").style.display = "table-row";
-		setTimeout(function(){ document.getElementById("npSaveWarning").style.display = "none"; }, 6000);
-	} else if (document.getElementById("npAddressWarning").style.display === "table-row") {
-		document.getElementById("npSaveWarningText").innerHTML = "Check website"
-		document.getElementById("npSaveWarning").style.display = "table-row";
-		setTimeout(function(){ document.getElementById("npSaveWarning").style.display = "none"; }, 4000);
-	} else {
+	let newCategory = (document.getElementById("npCategory")) ? document.getElementById("npCategory").value : 0;
+	
+	let errors = 0;
+	if (newLogin.length == 0) {
+		showWarning("npUser", "Login or email required");
+		errors++;
+	}
+	if (newPass.length == 0) {
+		showWarning("npPass", "Password required");
+		errors++;
+	}
+	if (newWeb.length == 0) {
+		showWarning("npWebsite", "Site name required");
+		errors++;
+	}
+	if (errors > 0)
+		return;
+	if (addressChanged) { // Check if address is correct
 		let Pass = {
 			loginname: newLogin,
 			pass: newPass,
 			website: newWeb,
 			address: newAddress,
+			category: newCategory,
 			notes: newNotes
 		};
 		browser.runtime.sendMessage({ Action: "createPassword", Pass });
+		resetNew();
 		window.close();
 	}
 }
 
 function useGenerator() {
-	let gpo = document.getElementById("rowGenerator");
-	if (gpo.style.display === "table-row") { // Generate a password
-		let gLow = document.getElementById("npLower").checked;
-		let gUp = document.getElementById("npUpper").checked;
-		let gNum = document.getElementById("npNumber").checked;
-		let gSpecial = document.getElementById("npSpecial").checked;
-		let gLength = parseInt(document.getElementById("npLength").value);
-		document.getElementById("npPass").value= generatepw(gLow, gUp, gNum, gSpecial, gLength);
-	} else { // Show Generator
-		gpo.style.display = "table-row";
-	}
+	//let gpo = document.getElementById("rowGenerator");
+	//if (gpo.style.display === "table-row") { // Generate a password
+	let gLow = document.getElementById("npLower").checked;
+	let gUp = document.getElementById("npUpper").checked;
+	let gNum = document.getElementById("npNumber").checked;
+	let gSpecial = document.getElementById("npSpecial").checked;
+	let gLength = parseInt(document.getElementById("npLength").value);
+	document.getElementById("npPass").value= generatepw(gLow, gUp, gNum, gSpecial, gLength);
+	//} else { // Show Generator
+	//	gpo.style.display = "table-row";
+	//}
 }
 
 function trimValue(id) {
@@ -432,19 +511,19 @@ function addressChanged() {
 	var url = document.getElementById("npAddress").value.trim();
 
 	if (url.length == 0) { // No URL
-		document.getElementById("npAddressWarning").style.display = "none";
-
-	} else if (isURL(url)) { // URL is correct
-		document.getElementById("npAddressWarning").style.display = "none";
+		return true;
+	} else
+	if (isURL(url)) { // URL is correct
 		url = url.replace(new RegExp(/^(?!http(s?):\/\/)(.*)$/, "gi"), "https://$2"); // Add https if omitted
 		document.getElementById("npAddress").value = url;
 		if (document.getElementById("npWebsite").value.length == 0) {
 			var objurl = new URL(url)
 			document.getElementById("npWebsite").value = objurl.hostname;
 		}
-
+		return true;
 	} else { // URL is wrong
-		document.getElementById("npAddressWarning").style.display = "table-row";
+		showWarning("npAddress", "Fill in a valid URL.<br>This field is optional and can be left blank");
+		return false;
 	}
 }
 
@@ -531,7 +610,7 @@ function random_characters(char_kind, size_wanted) {
 
 function isURL(url) {
 	url = url.trim().toLowerCase();
-	var re = new RegExp(/^(https?:\/\/www\.|https?:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/, "gi");
+	var re = new RegExp(/^(https?:\/\/www\.|https?:\/\/)?(([a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5})|(([0-9]{1,3}\.){3}[0-9]{1,3}))(:[0-9]{1,5})?(\/.*)?$/, "gi");
 
 	return re.test(url);
 }

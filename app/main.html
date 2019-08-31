@@ -14,8 +14,9 @@
 				<table align="center" class="equalDivide">
 					<tr>
 						<td>Host:</td>
-						<td>
-							<input type="text" id="loginHost" placeholder="https://example.com/owncloud" />
+						<td style="white-space:nowrap">
+							<input type="text" id="loginHost" style="width: 100%" placeholder="https://example.com/owncloud">
+							<img id="loginGo" src="/images/icon_link.png" alt="Go to..." style="width:13px;height:13px;opacity:0.6;position:relative;top:2px;right:20px">
 						</td>
 					</tr>
 					<tr id="loginHostWarning">
@@ -26,19 +27,19 @@
 					<tr>
 						<td>User:</td>
 						<td>
-							<input type="text" id="loginUser" />
+							<input type="text" id="loginUser" style="width: 100%">
 						</td>
 					</tr>
 					<tr>
 						<td>Password:</td>
 						<td>
-							<input type="password" id="loginPass" />
+							<input type="password" id="loginPass" style="width: 100%">
 						</td>
 					</tr>
 					<tr>
-						<td colspan="2">
+						<td colspan=2>
 							<input type="checkbox" id="loginRemember">
-							<label for="remember">Remember username and password</label></input>
+							<label for="loginRemember">Remember username and password</label>
 						</td>
 					</tr>
 					<tr>
@@ -50,7 +51,7 @@
 						<td>
 							<table align="center" class="equalDivide">
 								<tr>
-									<td colspan=2 align="center">
+									<td align="center">
 										<input type="button" id="loginSave" value="Save">
 										<input type="button" id="loginCancel" value="Cancel">
 									</td>
@@ -67,14 +68,11 @@
 			<table id="tableSearch">
 				<tr>
 					<td>
-						<!--button type="button" id="buttonSearch">Search</button-->
 						<img src="/images/find.png" style="width:24px;height:24px;">
 					</td>
-					<td colspan=3>
-						<input type="text" id="searchText" placeholder="Search for passwords..." />
-					</td>
-					<td>
-						<img id="searchCancel" src="/images/cancel.png" style="width:16px;height:16px;">
+					<td colspan=2 style="position:relative">
+						<input type="text" id="searchText" style="width:100%" placeholder="Search for passwords...">
+						<img id="searchCancel" src="/images/cancel.png" style="width:14px;height:14px;position:absolute;top:7px;right:2px">
 					</td>
 				</tr>
 				<tr id="searchWarning">
@@ -106,70 +104,75 @@
 		<div id="divNew">
 			<table id="newPass">
 				<tr>
-					<td>
-						<input type="text" id="npAddress" class="npField100" placeholder="Full URL (optional)">
-					</td>
-					<td>
-						<button id="npUrl">Get current</button>
-				</tr>
-				<tr id="npAddressWarning">
-					<td class="warning" colspan="2">
-						Fill in a valid URL.<br>This field is optional and can be left blank
+					<td colspan="3" style="position:relative">
+						<input type="text" id="npAddress" style="width: 100%" placeholder="Full URL (optional)">
+						<img id="npUrl" src="/images/icon_import.png" alt="Import" style="width:14px;height:13px;opacity:0.4;position:absolute;top:5px;right:3px">
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2">
-						<input type="text" id="npWebsite" class="npField100" placeholder="Site.com or Name Inc.">
+					<td colspan="3">
+						<input type="text" id="npWebsite" style="width: 100%" placeholder="Site.com or Name Inc.">
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2">
-						<input type="text" id="npUser" class="npField100" placeholder="Login name or e-mail">
+					<td colspan="3">
+						<input type="text" id="npUser" style="width: 100%" placeholder="Login name or e-mail">
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2">
-						<input type="text" id="npPass" class="npField100" placeholder="Password">
-					</td>
-				</tr>
-				<tr id="rowGenerator">
-					<td id="cellGenerator" colspan="2">
-						<input type="checkbox" id="npLower" checked>Lowercase characters</input><br>
-						<input type="checkbox" id="npUpper" checked>Uppercase characters</input><br>
-						<input type="checkbox" id="npNumber" checked>Numbers</input><br>
-						<input type="checkbox" id="npSpecial" checked>Punctuation marks</input><br>
-						<input type="text" id="npList" class="npField75" value="!@#$%^&*()_+~[]{}:;?<>,./-="></input>
-						<input type="button" id="npGenReset" value="Reset" />
-						<br>
-						<input type="number" id="npLength" class="npField25" min="1"></input> characters<br>
+					<td colspan="3">
+						<input type="text" id="npPass" style="width: 100%" placeholder="Password">
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2">
-						<button id="npGenerate">Generate password</button>
+					<td colspan="3" style="border:1px solid #BBB">
+						<table id="cellGenerator">
+							<tr>
+								<td>
+									<input type="checkbox" id="npLower" checked><label for="npLower">abc</label></input>
+								</td>
+								<td style="text-align:center">
+									<input type="checkbox" id="npUpper" checked><label for="npUpper">ABC</label></input>
+								</td>
+								<td style="text-align:right">
+									<input type="checkbox" id="npNumber" checked><label for="npNumber">123</label></input>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3" style="white-space:nowrap;">
+									<input type="checkbox" id="npSpecial" checked>
+									<input type="text" id="npList" value="!@#$%^&*()_+~[]{}:;?<>,./-=">
+									<!--input type="button" id="npGenReset" value="Reset"-->
+									<img id="npGenReset" src="/images/icon_reset.png" alt="Go to..." style="width:13px;height:13px;opacity:0.6">
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3" style="padding:0 25px">
+									<input type="number" id="npLength" style="width: 25%" min="1"><span style="padding:10px">characters</span>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3" style="text-align:center">
+									<button id="npGenerate" style="width:75%;height:30px">Generate password</button>
+								</td>
+							</tr>
+						</table>
 					</td>
 				</tr>
-					<td colspan="2">
+				<tr id="npRef">
+					<td colspan="3">
 						<textarea id="npNotes" placeholder="Notes (Optional)"></textarea>
 					</td>
-				<tr>
 				</tr>
-				<tr>
-				</tr>
+				<tr />
+				<tr />
 				<tr>
 					<td>
 						<button id="npReset">Reset</button>
 					</td>
-				</tr>
-				<tr>
 					<td>
 						<button id="npSave">Add password</button>
 					</td>
-				</tr>
-				<tr id="npSaveWarning">
-					<td id="npSaveWarningText" class="warning" colspan="2"/>
-				</tr>
-				<tr>
 					<td>
 						<button id="npBack">Back</button>
 					</td>
