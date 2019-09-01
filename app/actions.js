@@ -93,18 +93,21 @@ document.addEventListener('DOMContentLoaded', function() {
 		localStorage.setItem("npPass", document.getElementById("npPass").value);
 	});
 
-	document.getElementById("npWebsite").addEventListener("change", function(){
-		trimValue("npWebsite");
-		localStorage.setItem("npWebsite", document.getElementById("npWebsite").value);
+	document.getElementById("npAddress").addEventListener("change", function(){
+		if (addressChanged())
+			address2web();
+		localStorage.setItem("npAddress", document.getElementById("npAddress").value);
 	});
 
 	document.getElementById("npUrl").addEventListener("click", function(){
 		document.getElementById("npAddress").value = localStorage.getItem("currentUrl");
+		localStorage.setItem("npAddress", localStorage.getItem("currentUrl"));
+		address2web();
 	});
 
-	document.getElementById("npAddress").addEventListener("change", function(){
-		addressChanged();
-		localStorage.setItem("npAddress", document.getElementById("npAddress").value);
+	document.getElementById("npWebsite").addEventListener("change", function(){
+		trimValue("npWebsite");
+		localStorage.setItem("npWebsite", document.getElementById("npWebsite").value);
 	});
 
 	document.getElementById("npUser").addEventListener("change", function(){

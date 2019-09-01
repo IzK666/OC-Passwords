@@ -125,6 +125,7 @@ browser.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 	{
 		try {
 			processPasswords(changeInfo.url);
+			localStorage.setItem("currentUrl", changeInfo.url);
 		} catch (err) {}
 	}
 });

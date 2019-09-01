@@ -487,6 +487,20 @@ function createNew() {
 	}
 }
 
+function address2web() {
+	let web = document.getElementById("npWebsite");
+	if (web.value.length != 0)
+		return;
+
+	let address = document.getElementById("npAddress");
+	if (address.value.length == 0)
+		return;
+
+	let val = address.value.replace(new RegExp(/^(https?:\/\/www[0-9]?\.|https?:\/\/)?(([a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5})|(([0-9]{1,3}\.){3}[0-9]{1,3}))(:[0-9]{1,5})?(\/.*)?$/, "gi"),"$2");
+	if (val.length != address.value.length)	
+		web.value = val;
+}
+
 function useGenerator() {
 	//let gpo = document.getElementById("rowGenerator");
 	//if (gpo.style.display === "table-row") { // Generate a password
@@ -507,7 +521,7 @@ function trimValue(id) {
 }
 
 function addressChanged() {
-
+	// Verify if the address is correct.
 	var url = document.getElementById("npAddress").value.trim();
 
 	if (url.length == 0) { // No URL
@@ -528,7 +542,6 @@ function addressChanged() {
 }
 
 function generatepw(lower, upper, number, special, length_chars) {
-
 	var length_calc = Math.floor(length_chars / (lower + upper + number + special));
 
 	var Wlower = "";
@@ -536,18 +549,14 @@ function generatepw(lower, upper, number, special, length_chars) {
 	var Wnumber = "";
 	var Wspecial = "";
 
-	if (lower) {
+	if (lower)
 		Wlower = random_characters(0, length_calc);
-	}
-	if (upper) {
+	if (upper)
 		Wupper = random_characters(1, length_calc);
-	}
-	if (number) {
+	if (number)
 		Wnumber = random_characters(2, length_calc);
-	}
-	if (special) {
+	if (special)
 		Wspecial = random_characters(3, length_calc);
-	}
 
 	var ww = "" + Wlower + Wupper + Wnumber + Wspecial;
 
@@ -576,13 +585,11 @@ function generatepw(lower, upper, number, special, length_chars) {
 	}
 
 	ww = a.join("");
-
 	return ww;
 
 }
 
 function random_characters(char_kind, size_wanted) {
-
 	var allowed = "";
 	var text = "";
 
@@ -610,7 +617,7 @@ function random_characters(char_kind, size_wanted) {
 
 function isURL(url) {
 	url = url.trim().toLowerCase();
-	var re = new RegExp(/^(https?:\/\/www\.|https?:\/\/)?(([a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5})|(([0-9]{1,3}\.){3}[0-9]{1,3}))(:[0-9]{1,5})?(\/.*)?$/, "gi");
+	var re = new RegExp(/^(https?:\/\/www[0-9]?\.|https?:\/\/)?(([a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5})|(([0-9]{1,3}\.){3}[0-9]{1,3}))(:[0-9]{1,5})?(\/.*)?$/, "gi");
 
 	return re.test(url);
 }

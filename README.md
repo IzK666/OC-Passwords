@@ -3,7 +3,8 @@ A web extension to access your owncloud passwords and create new ones.
 
 Replaces the old [ff-oc-passwords](https://github.com/eglia/ff-oc-passwords) from Eglia.
 
-Supports Chrome and FireFox browsers. Should work on browsers based on chrome like Vivaldi or Opera.
+Supports Chrome and FireFox browsers. Also tested on Vivaldi. But should work on browsers based on chrome like Opera.
+
 Published in [Firefox addon store](https://addons.mozilla.org/en-US/firefox/addon/owncloud-passwords-client/), but not in the chrome store.
 
 
@@ -14,8 +15,13 @@ Published in [Firefox addon store](https://addons.mozilla.org/en-US/firefox/addo
 * Create new passwords (no login detection)
 
 ## Changelog:
+### 1.87
+	New: New password site is filled with website's domain
+	Fixed: On new password creation, url wasn't stored if the button import was used
+	Fixed: "Import" button not working properly. Url was gather only when a new tab was selected and not when url changed
+
 ### 1.86
-	Categories can be assigned to new passwords (only visible if you have categories)
+	New: Categories can be assigned to new passwords (only visible if you have categories)
 	Fixed: Notifications wasn't working on Firefox
 
 ### 1.85
