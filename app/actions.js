@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	document.getElementById("loginCancel").addEventListener("click", function(){
 		window.close();
 	});
+
 //	*************************************************************
 
 //	*************************************************************
@@ -50,6 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	document.getElementById("searchCancel").addEventListener("click", function(){
 		searchRemove();
 	});
+
 //	*************************************************************
 
 //	*************************************************************
@@ -94,15 +96,14 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 
 	document.getElementById("npAddress").addEventListener("change", function(){
-		if (addressChanged())
-			address2web();
+		addressChanged();
 		localStorage.setItem("npAddress", document.getElementById("npAddress").value);
 	});
 
 	document.getElementById("npUrl").addEventListener("click", function(){
 		document.getElementById("npAddress").value = localStorage.getItem("currentUrl");
 		localStorage.setItem("npAddress", localStorage.getItem("currentUrl"));
-		address2web();
+		addressChanged();
 	});
 
 	document.getElementById("npWebsite").addEventListener("change", function(){

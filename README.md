@@ -15,7 +15,7 @@ Published in [Firefox addon store](https://addons.mozilla.org/en-US/firefox/addo
 * Create new passwords (no login detection)
 
 ## Changelog:
-### 1.87
+### 1.88
 	New: New password site is filled with website's domain
 	Fixed: On new password creation, url wasn't stored if the button import was used
 	Fixed: "Import" button not working properly. Url was gather only when a new tab was selected and not when url changed

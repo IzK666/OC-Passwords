@@ -17,7 +17,6 @@ function load() {
 			searchChanged();
 			viewPasswords();
 			document.getElementById("textTotalLogins").textContent = response + " items";
-			document.getElementById("searchText").focus();
 
 			// Get passwords for current page, if any.
 			browser.runtime.sendMessage({ Action: "getPasswords" }, function(response2) {
@@ -77,6 +76,8 @@ function load() {
 				search();
 				document.getElementById("searchText").select();
 			}
+			else
+				document.getElementById("searchText").focus();
 
 			// reset Alarm
 			browser.runtime.sendMessage({ Action: "alarm" });
@@ -84,7 +85,7 @@ function load() {
 		else {
 			browser.browserAction.setBadgeText({ text: "" });
 			viewLogin();
-			document.getElementById("loginHost").focus();
+			document.getElementById("loginHost").select();
 		}
 	});
 
@@ -129,7 +130,6 @@ function viewPasswords() {
 	document.getElementById("divLogin").style.display = "none";
 	document.getElementById("divPasswords").style.display = "table";
 	document.getElementById("divNew").style.display = "none";
-//	document.getElementById("rowGenerator").style.display = "none";
 }
 
 function viewNew() {
@@ -137,8 +137,8 @@ function viewNew() {
 	document.getElementById("divLogin").style.display = "none";
 	document.getElementById("divNew").style.display = "table";
 	addressChanged();
-	document.getElementById("npAddress").focus();
-
+	//document.getElementById("npAddress").select();
+	setTimeout(function(){document.getElementById("npAddress").select();}, 50);
 }
 
 //	*************************************************************
@@ -157,8 +157,6 @@ function hostChanged() {
 
 	element.value = element.value.replace(new RegExp("^(htt?p)(s?):\/\/?(.*)$", "gi"), "http$2://$3"); // Detects and corrects single 'T' and single '/' from https
 	let https = element.value.match(/^(.*)(:\/\/?)/);
-	// MISSING
-	// Process for https:/url.com
 
 	if (https) {
 		document.getElementById("loginHostWarning").style.display = (https[1].toLowerCase() == "https" ? "none" : "table-row");
@@ -485,20 +483,6 @@ function createNew() {
 		resetNew();
 		window.close();
 	}
-}
-
-function address2web() {
-	let web = document.getElementById("npWebsite");
-	if (web.value.length != 0)
-		return;
-
-	let address = document.getElementById("npAddress");
-	if (address.value.length == 0)
-		return;
-
-	let val = address.value.replace(new RegExp(/^(https?:\/\/www[0-9]?\.|https?:\/\/)?(([a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5})|(([0-9]{1,3}\.){3}[0-9]{1,3}))(:[0-9]{1,5})?(\/.*)?$/, "gi"),"$2");
-	if (val.length != address.value.length)	
-		web.value = val;
 }
 
 function useGenerator() {
