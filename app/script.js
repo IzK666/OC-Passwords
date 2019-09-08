@@ -3,20 +3,11 @@ window.browser = (function () {
 })();
 
 function load() {
-	// Load login div
-	document.getElementById("loginHost").value = localStorage.getItem("host");
-	document.getElementById("loginUser").value = localStorage.getItem("user");
-	document.getElementById("loginPass").placeholder = (localStorage.getItem("code")) ? "******" : "";
-	document.getElementById("loginRemember").checked = (parseInt(localStorage.getItem("remember")) ? true : false);
-
-	hostChanged();
-
 	browser.runtime.sendMessage({ Action: "logged"}, function(response) {
 		// Background.js is logged (has passwords)
-		if (response) {
+		if (response.items) {
 			searchChanged();
-			viewPasswords();
-			document.getElementById("textTotalLogins").textContent = response + " items";
+			document.getElementById("textTotalLogins").textContent = response.items + " items";
 
 			// Get passwords for current page, if any.
 			browser.runtime.sendMessage({ Action: "getPasswords" }, function(response2) {
@@ -81,38 +72,51 @@ function load() {
 
 			// reset Alarm
 			browser.runtime.sendMessage({ Action: "alarm" });
+
+			// Add categories
+			browser.runtime.sendMessage({ Action: "getCategories"}, function (response) {
+				if (response !== false) {
+					console.log(response);
+					var node = document.createElement("select");
+					node.setAttribute("id", "npCategory");
+					let o = document.createElement("option");
+					o.setAttribute("value", "0");
+					o.appendChild(document.createTextNode("-- No category --"));
+					node.appendChild(o);
+					for (let i = 0; i < response.length; i++) {
+						let o = document.createElement("option");
+						o.setAttribute("value", response[i].id);
+						o.setAttribute("label", response[i].name);
+						o.appendChild(document.createTextNode(response[i].name));
+						node.appendChild(o);
+					}
+					node.addEventListener("change", function(k){localStorage.setItem("npCat", document.getElementById("npCategory").value);}, false);
+					var cell = document.createElement("td");
+					cell.setAttribute("colspan", 3);
+					cell.appendChild(node);
+					var row = document.createElement("tr").appendChild(cell);
+					var ref = document.getElementById("npRef");
+					ref.parentNode.insertBefore(row, ref);
+				}
+			});
+			console.log(response);
+			if (response.view == "main") {
+				viewPasswords();
+			} else if (response.view == "new") {
+				viewNew();
+			}
 		}
 		else {
+			// Load login div
+			document.getElementById("loginHost").value = localStorage.getItem("host");
+			document.getElementById("loginUser").value = localStorage.getItem("user");
+			document.getElementById("loginPass").placeholder = (localStorage.getItem("code")) ? "******" : "";
+			document.getElementById("loginRemember").checked = (parseInt(localStorage.getItem("remember")) ? true : false);
+			hostChanged();
+		
 			browser.browserAction.setBadgeText({ text: "" });
 			viewLogin();
 			document.getElementById("loginHost").select();
-		}
-	});
-
-	// Add categories
-	browser.runtime.sendMessage({ Action: "getCategories"}, function (response) {
-		if (response !== false) {
-			console.log(response);
-			var node = document.createElement("select");
-			node.setAttribute("id", "npCategory");
-			let o = document.createElement("option");
-			o.setAttribute("value", "0");
-			o.appendChild(document.createTextNode("-- No category --"));
-			node.appendChild(o);
-			for (let i = 0; i < response.length; i++) {
-				let o = document.createElement("option");
-				o.setAttribute("value", response[i].id);
-				o.setAttribute("label", response[i].name);
-				o.appendChild(document.createTextNode(response[i].name));
-				node.appendChild(o);
-			}
-			node.addEventListener("change", function(k){localStorage.setItem("npCat", document.getElementById("npCategory").value);}, false);
-			var cell = document.createElement("td");
-			cell.setAttribute("colspan", 3);
-			cell.appendChild(node);
-			var row = document.createElement("tr").appendChild(cell);
-			var ref = document.getElementById("npRef");
-			ref.parentNode.insertBefore(row, ref);
 		}
 	});
 }
@@ -516,7 +520,7 @@ function addressChanged() {
 		document.getElementById("npAddress").value = url;
 		if (document.getElementById("npWebsite").value.length == 0) {
 			var objurl = new URL(url)
-			document.getElementById("npWebsite").value = objurl.hostname;
+			document.getElementById("npWebsite").value = objurl.hostname.replace(new RegExp(/^(www\d?\.)(.*)$/, "gi"), "$2");
 		}
 		return true;
 	} else { // URL is wrong

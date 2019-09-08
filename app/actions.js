@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
 //	Main page. Buttons related.
 
 	document.getElementById("controlNewPass").addEventListener("click", function(){
+		browser.runtime.sendMessage({ Action: "setView", View: "new"});
 		viewNew();
 		loadNew();
 	});
@@ -82,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 
 	document.getElementById("npBack").addEventListener("click", function(){
+		browser.runtime.sendMessage({ Action: "setView", View: "main"});
 		viewPasswords();
 	});
 
@@ -101,8 +103,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 
 	document.getElementById("npUrl").addEventListener("click", function(){
-		document.getElementById("npAddress").value = localStorage.getItem("currentUrl");
-		localStorage.setItem("npAddress", localStorage.getItem("currentUrl"));
+		document.getElementById("npAddress").value = database.currentUrl;
+		localStorage.setItem("npAddress", database.currentUrl);
 		addressChanged();
 	});
 

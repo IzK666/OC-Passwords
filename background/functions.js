@@ -35,7 +35,9 @@ function login(Host, User, Pass=null) {
 		User,
 		Login
 	};
-	fetchAll(database, loggedIn);
+	database.currentView = "main";
+	fetchAll(database, function (F){fetchCategories(database);loggedIn();});
+	database.currentView = "main";
 	return Login;
 }
 
@@ -60,6 +62,7 @@ function logout() {
 	delete database.Login;
 	delete database.vault;
 	delete database.search;
+	localStorage.removeItem("code");
 	browser.browserAction.setIcon({path: "images/icon_grey.png"});
 	browser.browserAction.setBadgeText({text: ""});
 }

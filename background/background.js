@@ -5,6 +5,9 @@ window.browser = (function () {
 })();
 
 browser.runtime.onInstalled.addListener(function() {
+	// Remove old variables not longer used
+	delete localStorage.pass;
+	delete localStorage.currentUrl;
 	start();
 });
 
@@ -24,7 +27,7 @@ browser.runtime.onMessage.addListener(
 				break;
 
 			case "logged":
-				sendResponse((database.vault ? database.vault.length : false));
+				sendResponse({items: database.vault ? database.vault.length : false, view: database.currentView});
 				break;
 
 			case "getPasswords":
@@ -96,6 +99,14 @@ browser.runtime.onMessage.addListener(
 						browser.browserAction.setIcon({ path: "images/icon_black.png" });
 				break;
 
+			case "setView":
+				database.currentView = request.View;
+				break;
+
+			case "getView":
+				sendResponse(database.currentView);
+				break;
+
 			case "getCategories":
 				sendResponse((database.categories) ? database.categories : false);
 
@@ -125,7 +136,7 @@ browser.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 	{
 		try {
 			processPasswords(changeInfo.url);
-			localStorage.setItem("currentUrl", changeInfo.url);
+			database.currentUrl = changeInfo.url;
 		} catch (err) {}
 	}
 });
@@ -134,7 +145,7 @@ browser.tabs.onActivated.addListener( function(info) {
 	browser.tabs.query({ 'active': true, 'lastFocusedWindow': true}, function (tabs) {
 		try {
 			processPasswords(tabs[0].url);
-			localStorage.setItem("currentUrl", tabs[0].url);
+			database.currentUrl = tabs[0].url;
 		} catch (err) {}
 	});
 });

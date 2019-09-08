@@ -15,6 +15,10 @@ Published in [Firefox addon store](https://addons.mozilla.org/en-US/firefox/addo
 * Create new passwords (no login detection)
 
 ## Changelog:
+### 1.89
+	Fixed: When Url is copied into Site, remove "www."
+	New: Keep last view (new password or search/fill view)
+
 ### 1.88
 	New: New password site is filled with website's domain
 	Fixed: On new password creation, url wasn't stored if the button import was used
