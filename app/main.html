@@ -15,8 +15,8 @@
 					<tr>
 						<td>Host:</td>
 						<td style="white-space:nowrap">
-							<input type="text" id="loginHost" style="width: 100%" placeholder="https://example.com/owncloud">
-							<img id="loginGo" src="/images/icon_link.png" alt="Go to..." style="width:13px;height:13px;opacity:0.6;position:relative;top:2px;right:20px">
+							<input type="text" id="loginHost" style="width:100%" placeholder="https://example.com/owncloud">
+							<img id="loginGo" src="/images/link.png" alt="Go to..." style="height:13px;opacity:0.6;position:relative;top:2px;right:20px">
 						</td>
 					</tr>
 					<tr id="loginHostWarning">
@@ -27,13 +27,13 @@
 					<tr>
 						<td>User:</td>
 						<td>
-							<input type="text" id="loginUser" style="width: 100%">
+							<input type="text" id="loginUser" style="width:100%">
 						</td>
 					</tr>
 					<tr>
 						<td>Password:</td>
 						<td>
-							<input type="password" id="loginPass" style="width: 100%">
+							<input type="password" id="loginPass" style="width:100%">
 						</td>
 					</tr>
 					<tr>
@@ -43,20 +43,8 @@
 						</td>
 					</tr>
 					<tr>
-						<br>
-					</tr>
-					<tr>
-						<td>
-						</td>
-						<td>
-							<table align="center" class="equalDivide">
-								<tr>
-									<td align="center">
-										<input type="button" id="loginSave" value="Save">
-										<input type="button" id="loginCancel" value="Cancel">
-									</td>
-								</tr>
-							</table>
+						<td colspan=2 align="right">
+							<img id="loginSave" src="/images/login.png" alt="Access" style="height:32px;opacity:0.7">
 						</td>
 					</tr>
 				</table>
@@ -67,12 +55,12 @@
 			<hr>
 			<table id="tableSearch">
 				<tr>
-					<td>
-						<img src="/images/find.png" style="width:24px;height:24px;">
+					<td style="width:25px">
+						<img src="/images/find.png" style="height:24px;opacity:.4">
 					</td>
 					<td colspan=2 style="position:relative">
 						<input type="text" id="searchText" style="width:100%" placeholder="Search for passwords...">
-						<img id="searchCancel" src="/images/cancel.png" style="width:14px;height:14px;position:absolute;top:7px;right:2px">
+						<img id="searchCancel" src="/images/cancel.png" style="height:14px;position:absolute;top:7px;right:2px">
 					</td>
 				</tr>
 				<tr id="searchWarning">
@@ -87,14 +75,17 @@
 					<td>
 						<span id="textTotalLogins" class="infoDB">0 items</span>
 					</td>
-					<td>
-						<button id="controlNewPass" tabIndex="-1"><span class="infoDB">Create new</span></button>
+					<td style="width:50%;text-align:center">
+						<img id="controlNewPass" src="/images/new.png" alt="Create new password" style="height:24px">
 					</td>
 					<td>
-						<button id="controlRefresh" tabindex="-1"><span class="infoDB">Refresh</span></button>
+						<img id="controlRefresh" src="/images/refresh.png" alt="Refresh" style="height:20px;opacity:0.4">
 					</td>
 					<td>
-						<img id="controlLogout" src="/images/power_black.png" alt="Logout" style="width:18px;height:18px;opacity:0.4">
+						<img id="controlServer" src="/images/owncloud.png" alt="Logout" style="height:20px;opacity:0.4">
+					</td>
+					<td>
+						<img id="controlLogout" src="/images/power_black.png" alt="Logout" style="height:20px;opacity:0.4">
 					</td>
 				</tr>
 			</table>
@@ -105,23 +96,23 @@
 			<table id="newPass">
 				<tr>
 					<td colspan="3" style="position:relative">
-						<input type="text" id="npAddress" style="width: 100%" placeholder="Full URL (optional)">
-						<img id="npUrl" src="/images/icon_import.png" alt="Import" style="width:14px;height:13px;opacity:0.4;position:absolute;top:5px;right:3px">
+						<input type="text" id="npAddress" style="width:100%" placeholder="Full URL (optional)">
+						<img id="npUrl" src="/images/import.png" alt="Import" style="width:14px;height:13px;opacity:0.4;position:absolute;top:4px;right:3px">
 					</td>
 				</tr>
 				<tr>
 					<td colspan="3">
-						<input type="text" id="npWebsite" style="width: 100%" placeholder="Site.com or Name Inc.">
+						<input type="text" id="npWebsite" style="width:100%" placeholder="Site.com or Name Inc.">
 					</td>
 				</tr>
 				<tr>
 					<td colspan="3">
-						<input type="text" id="npUser" style="width: 100%" placeholder="Login name or e-mail">
+						<input type="text" id="npUser" style="width:100%" placeholder="Login name or e-mail">
 					</td>
 				</tr>
 				<tr>
 					<td colspan="3">
-						<input type="text" id="npPass" style="width: 100%" placeholder="Password">
+						<input type="text" id="npPass" style="width:100%" placeholder="Password">
 					</td>
 				</tr>
 				<tr>
@@ -142,12 +133,12 @@
 								<td colspan="3" style="white-space:nowrap;">
 									<input type="checkbox" id="npSpecial" checked>
 									<input type="text" id="npList" style="width:80%" value="!@#$%^&*()_+~[]{}:;?<>,./-=">
-									<img id="npGenReset" src="/images/icon_reset.png" alt="Go to..." style="width:13px;height:13px;opacity:0.6">
+									<img id="npGenReset" src="/images/reset.png" alt="Go to..." style="height:16px;opacity:0.5;position:relative;top:3px">
 								</td>
 							</tr>
 							<tr>
 								<td colspan="3" style="padding:0 25px">
-									<input type="number" id="npLength" style="width: 25%" min="1"><span style="padding:10px">characters</span>
+									<input type="number" id="npLength" style="width:25%" min="1"><span style="padding:10px">characters</span>
 								</td>
 							</tr>
 							<tr>
@@ -164,16 +155,15 @@
 					</td>
 				</tr>
 				<tr />
-				<tr />
 				<tr>
-					<td>
-						<button id="npBack">Back</button>
+					<td style="text-align:left">
+						<img id="npBack" src="/images/back.png" alt="Back" style="height:26px;opacity:0.5">
 					</td>
-					<td>
-						<button id="npSave">Add password</button>
+					<td style="text-align:center">
+						<img id="npSave" src="/images/upload.png" alt="Add password" style="height:40px;opacity:0.5">
 					</td>
-					<td>
-						<button id="npReset">Reset</button>
+					<td style="text-align:right">
+						<img id="npReset" src="/images/reset.png" alt="Reset" style="height:26px;opacity:0.5">
 					</td>
 				</tr>
 			</table>

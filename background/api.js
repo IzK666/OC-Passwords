@@ -1,9 +1,11 @@
-function fetchSingle(database, id) {
+function fetchSingle(database, id, callback=null) {
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			database.vault.push(jsonToObject(JSON.parse(xhr.response)));
 			database.vault.sort(dynamicSort("url")); // Sort the database
+			if (callback)
+				callback();
 		}
 	};
 	xhr.open("GET", database.Host + "/index.php/apps/passwords/api/0.1/passwords/" + id);
@@ -107,7 +109,8 @@ function createNew(database, data, callback=null) {
 		}
 		else if (xhr.status == 200) {
 			let item = JSON.parse(xhr.response);
-			fetchSingle(database, item.id); // Add the new item to the list
+			fetchSingle(database, item.id, function(){processPasswords(localStorage.getItem("currentUrl"))}); // Add the new item to the list
+			database.currentView = "main";
 			if (callback)
 				callback();
 		}

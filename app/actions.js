@@ -35,10 +35,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		login();
 	});
 
-	document.getElementById("loginCancel").addEventListener("click", function(){
-		window.close();
-	});
-
 //	*************************************************************
 
 //	*************************************************************
@@ -65,6 +61,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	document.getElementById("controlRefresh").addEventListener("click", function(){
 		refresh();
+	});
+
+	document.getElementById("controlServer").addEventListener("click", function(){
+		server();
 	});
 
 	document.getElementById("controlLogout").addEventListener("click", function(){
@@ -103,8 +103,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 
 	document.getElementById("npUrl").addEventListener("click", function(){
-		document.getElementById("npAddress").value = database.currentUrl;
-		localStorage.setItem("npAddress", database.currentUrl);
+		document.getElementById("npAddress").value = localStorage.getItem("currentUrl");
+		localStorage.setItem("npAddress", localStorage.getItem("currentUrl"));
 		addressChanged();
 	});
 

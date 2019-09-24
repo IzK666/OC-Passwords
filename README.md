@@ -5,19 +5,24 @@ Replaces the old [ff-oc-passwords](https://github.com/eglia/ff-oc-passwords) fro
 
 Supports Chrome and FireFox browsers. Also tested on Vivaldi. But should work on browsers based on chrome like Opera.
 
-Published in [Firefox addon store](https://addons.mozilla.org/en-US/firefox/addon/owncloud-passwords-client/), but not in the chrome store.
+Published in [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/owncloud-passwords-client/), but not in the chrome store.
 
 
 ## Changes from original add-on:
-* Includes a search function. Clicking on the url, open the link in a new tab.
-* Ability to copy into clipboard both, users and passwords. After 10 seconds, clipboard is cleared. On firefox, is replaced with a blank space: ' '.
-* Shortcut Ctrl+Shift+F to open the interface.
+* Includes a search function. Clicking on the url, open the link in a new tab
+* Ability to copy into clipboard both, users and passwords. After 10 seconds, clipboard is cleared. On firefox, is replaced with a blank space: ' '
+* Shortcut Ctrl+Shift+F to open the interface
 * Create new passwords (no login detection)
 
-## Changelog:
+## Changelog (Not all versions are released):
+### 1.90
+	Fixed: When a new password is created, check it against current tab
+	New: Link to open a new tab with owncloud server
+	New: New icons
+
 ### 1.89
 	Fixed: When Url is copied into Site, remove "www."
-	New: Keep last view (new password or search/fill view)
+	New: Keep last view (search/fill view or new password)
 
 ### 1.88
 	New: New password site is filled with website's domain

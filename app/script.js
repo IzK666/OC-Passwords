@@ -52,7 +52,6 @@ function load() {
 						table.appendChild(row);
 					}
 					document.getElementById("divPasswords").insertAdjacentElement('afterbegin', table);
-
 				}
 			});
 
@@ -65,29 +64,25 @@ function load() {
 			if (localStorage.getItem("searchword")) {
 				document.getElementById("searchText").value = localStorage.getItem("searchword");
 				search();
-				document.getElementById("searchText").select();
 			}
-			else
-				document.getElementById("searchText").focus();
 
 			// reset Alarm
 			browser.runtime.sendMessage({ Action: "alarm" });
 
 			// Add categories
-			browser.runtime.sendMessage({ Action: "getCategories"}, function (response) {
-				if (response !== false) {
-					console.log(response);
+			browser.runtime.sendMessage({ Action: "getCategories"}, function (response4) {
+				if (response4 !== false) {
 					var node = document.createElement("select");
 					node.setAttribute("id", "npCategory");
 					let o = document.createElement("option");
 					o.setAttribute("value", "0");
 					o.appendChild(document.createTextNode("-- No category --"));
 					node.appendChild(o);
-					for (let i = 0; i < response.length; i++) {
+					for (let i = 0; i < response4.length; i++) {
 						let o = document.createElement("option");
-						o.setAttribute("value", response[i].id);
-						o.setAttribute("label", response[i].name);
-						o.appendChild(document.createTextNode(response[i].name));
+						o.setAttribute("value", response4[i].id);
+						o.setAttribute("label", response4[i].name);
+						o.appendChild(document.createTextNode(response4[i].name));
 						node.appendChild(o);
 					}
 					node.addEventListener("change", function(k){localStorage.setItem("npCat", document.getElementById("npCategory").value);}, false);
@@ -99,11 +94,13 @@ function load() {
 					ref.parentNode.insertBefore(row, ref);
 				}
 			});
-			console.log(response);
 			if (response.view == "main") {
 				viewPasswords();
+				document.getElementById("searchText").select();
 			} else if (response.view == "new") {
 				viewNew();
+				loadNew();
+				document.getElementById("npAddress").select();
 			}
 		}
 		else {
@@ -141,8 +138,6 @@ function viewNew() {
 	document.getElementById("divLogin").style.display = "none";
 	document.getElementById("divNew").style.display = "table";
 	addressChanged();
-	//document.getElementById("npAddress").select();
-	setTimeout(function(){document.getElementById("npAddress").select();}, 50);
 }
 
 //	*************************************************************
@@ -398,6 +393,11 @@ function showWarning(node, warn) {
 
 function refresh() {
 	browser.runtime.sendMessage({ Action: "refresh" });
+	window.close();
+}
+
+function server() {
+	browser.runtime.sendMessage({ Action: "openUrl", url: localStorage.getItem("host") });
 	window.close();
 }
 

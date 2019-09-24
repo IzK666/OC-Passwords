@@ -7,7 +7,6 @@ window.browser = (function () {
 browser.runtime.onInstalled.addListener(function() {
 	// Remove old variables not longer used
 	delete localStorage.pass;
-	delete localStorage.currentUrl;
 	start();
 });
 
@@ -135,8 +134,8 @@ browser.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 	if (changeInfo.url)
 	{
 		try {
+			localStorage.setItem("currentUrl", changeInfo.url);
 			processPasswords(changeInfo.url);
-			database.currentUrl = changeInfo.url;
 		} catch (err) {}
 	}
 });
@@ -144,8 +143,8 @@ browser.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 browser.tabs.onActivated.addListener( function(info) {
 	browser.tabs.query({ 'active': true, 'lastFocusedWindow': true}, function (tabs) {
 		try {
+			localStorage.setItem("currentUrl", tabs[0].url);
 			processPasswords(tabs[0].url);
-			database.currentUrl = tabs[0].url;
 		} catch (err) {}
 	});
 });
