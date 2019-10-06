@@ -1,22 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
 	load();
 
-	document.getElementById("loginForm").addEventListener("keyup", function(e){
+	document.getElementById("login").addEventListener("keyup", function(e){
 		var keyCode = e.keyCode;
 		if (keyCode == 13){ // Key Enter
 			login();
 		} else if (keyCode == 27){ // Key escape
 			window.close();
-		}
-	});
-
-	document.getElementById("searchText").addEventListener("keyup", function(e){
-		var keyCode = e.keyCode;
-		if (keyCode == 27){ // Key Escape. Not working in Firefox.
-			if (document.getElementById("searchText").value == "")
-				window.close();
-			else
-				searchRemove();
 		}
 	});
 
@@ -46,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	document.getElementById("searchCancel").addEventListener("click", function(){
 		searchRemove();
+		document.getElementById("searchText").select();
 	});
 
 //	*************************************************************
@@ -57,6 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		browser.runtime.sendMessage({ Action: "setView", View: "new"});
 		viewNew();
 		loadNew();
+		document.getElementById("npAddress").select();
 	});
 
 	document.getElementById("controlRefresh").addEventListener("click", function(){
@@ -85,6 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	document.getElementById("npBack").addEventListener("click", function(){
 		browser.runtime.sendMessage({ Action: "setView", View: "main"});
 		viewPasswords();
+		document.getElementById("searchText").select();
 	});
 
 	document.getElementById("npGenReset").addEventListener("click", function(){
@@ -93,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 
 	document.getElementById("npGenerate").addEventListener("click", function(){
-		useGenerator();
+		generatePw();
 		localStorage.setItem("npPass", document.getElementById("npPass").value);
 	});
 
@@ -102,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		localStorage.setItem("npAddress", document.getElementById("npAddress").value);
 	});
 
-	document.getElementById("npUrl").addEventListener("click", function(){
+	document.getElementById("npImport").addEventListener("click", function(){
 		document.getElementById("npAddress").value = localStorage.getItem("currentUrl");
 		localStorage.setItem("npAddress", localStorage.getItem("currentUrl"));
 		addressChanged();

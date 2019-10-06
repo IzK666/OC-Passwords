@@ -35,10 +35,10 @@ function login(Host, User, Pass=null) {
 		User,
 		Login
 	};
-	database.currentView = "main";
 	fetchAll(database, function (F){fetchCategories(database);loggedIn();});
 	database.currentView = "main";
-	return Login;
+	if (localStorage.remember == 1)
+		localStorage.setItem("code", Login);
 }
 
 function loggedIn() {

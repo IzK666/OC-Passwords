@@ -1,11 +1,12 @@
 body {
-	margin:				10px 15px 10px 10px;
+	margin:				10px 0px;
 	width:				300px;
+	font-family:		"Segoe UI", Tahoma, sans-serif;
+	font-size:			12px;
 }
 
-h1 {
-	font-size:			15px;
-	text-align:			center;
+body::-webkit-scrollbar {
+	display: none;
 }
 
 div {
@@ -14,10 +15,14 @@ div {
 }
 
 table {
-	width:				90%;
+	width:				100%;
 	border-spacing:		0px 10px;
-	margin-left:		auto;
-	margin-right:		auto;
+	-moz-user-select:	none; /* Old versions of Firefox */
+	user-select:		none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
+}
+
+td {
+	vertical-align:		middle;
 }
 
 input {
@@ -28,18 +33,99 @@ select {
 	width:				100%;
 }
 
-#control {
-	border-spacing:		2px 0px;
+#login tr:first-child td {
+	font-size:			125%;
+	font-weight:		bold;
+	font-style:			italic;
+	height:				50px;
 }
 
-td {
-	vertical-align:		middle;
+#login input[type=text] {
+	width:				100%;
 }
 
-.highlightCell
-{
+#webResults {
+	display:			block;
+	max-height:			381px;
+	overflow-y:			auto;
+	border-collapse:	collapse;
+	margin:				0px 0px 10px 0px;
+	scrollbar-color:	#08E #CCD;
+	scrollbar-width:	thin;
+}
+
+#webResults td {
+	padding:			7px;
+}
+
+#searchResultsDiv {
+	display:			block;
+	max-height:			300px;
+	overflow:			hidden;
+	scrollbar-color:	#08E #CCD;
+	scrollbar-width:	thin;
+}
+
+#searchResults {
+	width:				90%;
+	margin-left:		auto;
+	margin-right:		auto;
+	border-spacing:		0px;
+	margin-bottom:		10px;
+}
+
+#searchResults tr {
+	overflow:			hidden;
+	white-space:		nowrap;
+}
+
+#searchResults td {
+	overflow:			hidden;
+	display:			inline-block;
+	white-space:		nowrap;
+	padding:			5px 0px;
+}
+
+#webResults tr:hover,
+#searchResults tr:hover {
+	background-color:	#EEEEF6;
+}
+
+#webResults td:hover,
+#searchResults td:hover {
 	font-weight:		bold;
 	color:				red;
+	transform:			scale(1.15);translate(20px);
+	overflow:			visible;
+}
+
+#searchResults td:nth-child(1):hover {
+	padding-left:		10px;
+}
+
+#control {
+	border-spacing:		2px 0px;
+	width:				90%;
+	margin-left:		auto;
+	margin-right:		auto;
+	border-top:			2px solid #888;
+}
+
+#control td {
+	width:				18.75%;
+	text-align:			center;
+	padding-top:		10px;
+}
+
+#newPass, #tableSearch {
+	width:				75%;
+	margin-left:		auto;
+	margin-right:		auto;
+}
+
+#tableSearch {
+	border-spacing:		0px;
+	padding:			10px 0px;
 }
 
 .center
@@ -57,9 +143,21 @@ td {
 	text-decoration:	underline blue;
 }
 
-#divLogins {
+#divLogin {
+	width:				85%;
+	margin-left:		auto;
+	margin-right:		auto;
+}
+
+#divNoLogins {
+	width:				80%;
+	margin-left:		auto;
+	margin-right:		auto;
 	white-space:		nowrap;
 	font-weight:		bold;
+	border-bottom:		1px solid #B22;
+	border-top:			1px solid #B22;
+	padding:			10px;
 }
 
 .infoDB {
@@ -68,9 +166,14 @@ td {
 	color:				#AAA;
 }
 
+#textTotalLogins:hover {
+	font-size:			13px;
+	color:				#555;
+}
+
 #divCountdown {
 	z-index:			1;
-	position:			absolute;
+	position:			fixed;
 	right: 				5px;
 	bottom:				5px;
 	width:				70px;
@@ -92,6 +195,11 @@ button, input[type=button] {
 	border-radius:		0px;
 }
 
+input:focus, textarea:focus, select:focus, button:hover {
+  box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+  border: 1px solid rgba(81, 203, 238, 1);
+}
+
 #save, #cancel {
 	width:				70px;
 }
@@ -104,4 +212,24 @@ button, input[type=button] {
 textarea {
 	height:				100px;
 	width:				100%;
+	-webkit-box-sizing:	border-box;
+	-moz-box-sizing:	border-box;
+	box-sizing:			border-box;
+}
+
+img {
+	opacity:			0.4;
+}
+
+img:hover {
+	opacity:			1;
+}
+
+::-webkit-scrollbar {
+    width:				8px;
+    background-color:	#CCD;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color:	#08E;
 }

@@ -24,14 +24,14 @@ function fetchAll(database, callback=null) {
 	xhr.timeout = 5000;
 
 	xhr.ontimeout = function () {
-		notificationError("Connection to server timed out!\n\nMaybe the certificate is self signed.\nIf that's the case and you TRUST/OWN the server, you have to add an excepcion manually\nAccess the OC website and follow the instructions (Advanced > add exception > Confirm)");
+		notification("Connection to server timed out!\n\nMaybe the certificate is self signed.\nIf that's the case and you TRUST/OWN the server, you have to add an excepcion manually\nAccess the OC website and follow the instructions (Advanced > add exception > Confirm)");
 	};
 	xhr.onerror = function () {
-		notificationError("The request could not be sent!\n\nMaybe the certificate is self signed.\nONLY if you TRUST/OWN the server, access the OC website and follow the instructions:\n(Advanced > add exception > Confirm)");
+		notification("The request could not be sent!\n\nMaybe the certificate is self signed.\nONLY if you TRUST/OWN the server, access the OC website and follow the instructions:\n(Advanced > add exception > Confirm)");
 	};
 	xhr.onload = function () {
 		if (xhr.status == 401) {
-			notificationError("User or password incorrect.");
+			notification("User or password incorrect.");
 		}
 		else if (xhr.status == 200) {
 			loginList = JSON.parse(xhr.response);
@@ -46,7 +46,7 @@ function fetchAll(database, callback=null) {
 				callback();
 		}
 		else if (xhr.status != 200) {
-			notificationError("The request couldn't be answered.");
+			notification("The request couldn't be answered.");
 		}
 	};
 	xhr.send();
@@ -60,14 +60,14 @@ function fetchCategories(database, callback=null) {
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.timeout = 10000;
 	xhr.ontimeout = function () {
-		notificationError("Connection to server timed out!");
+		notification("Connection to server timed out!");
 	};
 	xhr.onerror = function () {
-		notificationError("The request could not be sent!");
+		notification("The request could not be sent!");
 	};
 	xhr.onload = function () {
 		if (xhr.status == 401) {
-			notificationError("User or password incorrect.");
+			notification("User or password incorrect.");
 		}
 		else if (xhr.status == 200) {
 			categoryList = JSON.parse(xhr.response);
@@ -85,7 +85,7 @@ function fetchCategories(database, callback=null) {
 				callback();
 		}
 		else if (xhr.status != 200) {
-			notificationError("The request couldn't be answered.");
+			notification("The request couldn't be answered.");
 		}
 	};
 	xhr.send();
@@ -98,16 +98,17 @@ function createNew(database, data, callback=null) {
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.timeout = 10000;
 	xhr.ontimeout = function () {
-		notificationError("Connection to server timed out!");
+		notification("Connection to server timed out!", "Upload password");
 	};
 	xhr.onerror = function () {
-		notificationError("The request could not be sent!");
+		notification("The request could not be sent!", "Upload password");
 	};
 	xhr.onload = function () {
 		if (xhr.status == 401) {
-			notificationError("User or password incorrect.");
+			notification("User or password incorrect.", "Upload password"); // Shouldn't appear
 		}
 		else if (xhr.status == 200) {
+			notification("Created new password succesfully", "Upload password")
 			let item = JSON.parse(xhr.response);
 			fetchSingle(database, item.id, function(){processPasswords(localStorage.getItem("currentUrl"))}); // Add the new item to the list
 			database.currentView = "main";
@@ -115,7 +116,7 @@ function createNew(database, data, callback=null) {
 				callback();
 		}
 		else if (xhr.status != 200) {
-			notificationError("The request couldn't be answered.");
+			notification("The request couldn't be answered.", "Upload password");
 		}
 	};
 	xhr.send(JSON.stringify(data));
@@ -174,11 +175,11 @@ function jsonToObject(json) {
 	return object;
 }
 
-function notificationError(body) {
+function notification(body, title="Failed to get passwords") {
 	// Shows a predefined notification with some customized body.
 	browser.notifications.create("0CP3rr", {
 		type: "basic",
-		title: "Failed to get passwords",
+		title: title,
 		iconUrl: "/images/icon_black.png",
 		message: body
 	});

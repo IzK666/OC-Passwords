@@ -11,8 +11,8 @@ browser.runtime.onInstalled.addListener(function() {
 });
 
 browser.runtime.onStartup.addListener(function() {
-	console.log("Start");
-	start();
+	setTimeout(start, 5000);
+	//start();
 });
 
 browser.runtime.onMessage.addListener(
@@ -20,7 +20,7 @@ browser.runtime.onMessage.addListener(
 		switch (request.Action) {
 			case "login":
 				if (request.User)
-					sendResponse(login(request.Host, request.User, request.Pass));
+					login(request.Host, request.User, request.Pass);
 				else
 					login(request.Host, request.Code);
 				break;

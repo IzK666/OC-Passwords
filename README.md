@@ -15,6 +15,15 @@ Published in [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/ow
 * Create new passwords (no login detection)
 
 ## Changelog (Not all versions are released):
+### 1.91
+	New: Make text (search results) not selectable
+	New: Added confirmation when new password is created/uploaded
+	Fixed: Bottom icons won't disappear. Added scrollbars for current url passwords (more than 10 matches) and search results (at least 4 will be visible, but usually 10)
+	Fixed: Issues with focus when switching between Search/Fill view and New Password
+	Fixed: Import url button don't store Site in memory and went lost after closing the interface
+	Fixed: Remember password didn't store the password and couldn't reconnect
+	Fixed: Added a delay on startup before retrieving passwords
+
 ### 1.90
 	Fixed: When a new password is created, check it against current tab
 	New: Link to open a new tab with owncloud server

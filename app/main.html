@@ -9,83 +9,84 @@
 	<link rel="stylesheet" href="style.css">
 	<body>
 		<div id="divLogin">
-			<h3>Enter your ownCloud credentials:</h3>
-			<form id="loginForm">
-				<table align="center" class="equalDivide">
-					<tr>
-						<td>Host:</td>
-						<td style="white-space:nowrap">
-							<input type="text" id="loginHost" style="width:100%" placeholder="https://example.com/owncloud">
-							<img id="loginGo" src="/images/link.png" alt="Go to..." style="height:13px;opacity:0.6;position:relative;top:2px;right:20px">
-						</td>
-					</tr>
-					<tr id="loginHostWarning">
-						<td colspan=2 class="warning">
-							Warning:<br>This connection will be unencrypted and<br>expose all your passwords on the network!
-						</td>
-					</tr>
-					<tr>
-						<td>User:</td>
-						<td>
-							<input type="text" id="loginUser" style="width:100%">
-						</td>
-					</tr>
-					<tr>
-						<td>Password:</td>
-						<td>
-							<input type="password" id="loginPass" style="width:100%">
-						</td>
-					</tr>
-					<tr>
-						<td colspan=2>
-							<input type="checkbox" id="loginRemember">
-							<label for="loginRemember">Remember username and password</label>
-						</td>
-					</tr>
-					<tr>
-						<td colspan=2 align="right">
-							<img id="loginSave" src="/images/login.png" alt="Access" style="height:32px;opacity:0.7">
-						</td>
-					</tr>
-				</table>
-			</form>
+			<table id="login">
+				<tr>
+					<td colspan=2>Enter your ownCloud credentials:</td>
+				</tr>
+				<tr>
+					<td>Host:</td>
+					<td style="white-space:nowrap">
+						<input type="text" id="loginHost" style="width:100%" placeholder="https://example.com/owncloud">
+						<img id="loginGo" src="/images/link.png" alt="Go to..." style="height:13px;position:relative;top:2px;right:20px">
+					</td>
+				</tr>
+				<tr id="loginHostWarning">
+					<td colspan=2 class="warning">
+						Warning:<br>This connection will be unencrypted and<br>expose all your passwords on the network!
+					</td>
+				</tr>
+				<tr>
+					<td>User:</td>
+					<td>
+						<input type="text" id="loginUser" style="width:100%">
+					</td>
+				</tr>
+				<tr>
+					<td>Password:</td>
+					<td>
+						<input type="password" id="loginPass" style="width:100%">
+					</td>
+				</tr>
+				<tr>
+					<td colspan=2>
+						<input type="checkbox" id="loginRemember">
+						<label for="loginRemember">Remember username and password</label>
+					</td>
+				</tr>
+				<tr>
+					<td colspan=2 align="right">
+						<img id="loginSave" src="/images/login.png" alt="Access" style="height:32px">
+					</td>
+				</tr>
+			</table>
 		</div>
 		<div id="divPasswords">
-			<p id="divLogins">No Logins found for this site.</p>
-			<hr>
-			<table id="tableSearch">
+			<p id="divNoLogins">No Logins found for this site.</p>
+			<table id="tableSearch" tabIndex=-1>
 				<tr>
 					<td style="width:25px">
-						<img src="/images/find.png" style="height:24px;opacity:.4">
+						<img src="/images/find.png" style="height:24px;opacity:.5">
 					</td>
-					<td colspan=2 style="position:relative">
+					<td style="position:relative">
 						<input type="text" id="searchText" style="width:100%" placeholder="Search for passwords...">
-						<img id="searchCancel" src="/images/cancel.png" style="height:14px;position:absolute;top:7px;right:2px">
+						<img id="searchCancel" src="/images/cancel.png" style="height:14px;position:absolute;top:7px;right:2px;opacity:1">
 					</td>
 				</tr>
 				<tr id="searchWarning">
-					<td colspan=5 class="warning">
+					<td />
+					<td class="warning">
 						Warning: Minimum 3 letters to search!
 					</td>
 				</tr>
 			</table>
-			<hr>
+			<div id="searchResultsDiv" tabindex=-1>
+			</div>
 			<table id="control">
 				<tr>
-					<td>
+					<td id="TotalLogins" style="width:25%;text-align:left">
 						<span id="textTotalLogins" class="infoDB">0 items</span>
 					</td>
-					<td style="width:50%;text-align:center">
+					<td>
 						<img id="controlNewPass" src="/images/new.png" alt="Create new password" style="height:24px">
 					</td>
 					<td>
-						<img id="controlRefresh" src="/images/refresh.png" alt="Refresh" style="height:20px;opacity:0.4">
+						<img id="controlServer" src="/images/owncloud.png" alt="Go to website" style="height:20px">
 					</td>
 					<td>
-						<img id="controlServer" src="/images/owncloud.png" alt="Logout" style="height:20px;opacity:0.4">
+						<img id="controlRefresh" src="/images/refresh.png" alt="Refresh" style="height:20px">
 					</td>
 					<td>
-						<img id="controlLogout" src="/images/power_black.png" alt="Logout" style="height:20px;opacity:0.4">
+						<img id="controlLogout" src="/images/logout.png" alt="Logout" style="height:20px">
 					</td>
 				</tr>
 			</table>
@@ -97,7 +98,7 @@
 				<tr>
 					<td colspan="3" style="position:relative">
 						<input type="text" id="npAddress" style="width:100%" placeholder="Full URL (optional)">
-						<img id="npUrl" src="/images/import.png" alt="Import" style="width:14px;height:13px;opacity:0.4;position:absolute;top:4px;right:3px">
+						<img id="npImport" src="/images/import.png" alt="Import" style="width:14px;height:13px;position:absolute;top:4px;right:3px">
 					</td>
 				</tr>
 				<tr>
@@ -133,12 +134,12 @@
 								<td colspan="3" style="white-space:nowrap;">
 									<input type="checkbox" id="npSpecial" checked>
 									<input type="text" id="npList" style="width:80%" value="!@#$%^&*()_+~[]{}:;?<>,./-=">
-									<img id="npGenReset" src="/images/reset.png" alt="Go to..." style="height:16px;opacity:0.5;position:relative;top:3px">
+									<img id="npGenReset" src="/images/reset.png" alt="Go to..." style="height:16px;position:relative;top:3px">
 								</td>
 							</tr>
 							<tr>
 								<td colspan="3" style="padding:0 25px">
-									<input type="number" id="npLength" style="width:25%" min="1"><span style="padding:10px">characters</span>
+									<input type="number" id="npLength" style="width:30%" min="1"><span style="padding:10px">characters</span>
 								</td>
 							</tr>
 							<tr>
@@ -154,16 +155,15 @@
 						<textarea id="npNotes" placeholder="Notes (Optional)"></textarea>
 					</td>
 				</tr>
-				<tr />
 				<tr>
-					<td style="text-align:left">
-						<img id="npBack" src="/images/back.png" alt="Back" style="height:26px;opacity:0.5">
+					<td style="text-align:left;padding:10px">
+						<img id="npBack" src="/images/back.png" alt="Back" style="height:20px">
 					</td>
 					<td style="text-align:center">
-						<img id="npSave" src="/images/upload.png" alt="Add password" style="height:40px;opacity:0.5">
+						<img id="npSave" src="/images/upload.png" alt="Add password" style="height:32px">
 					</td>
-					<td style="text-align:right">
-						<img id="npReset" src="/images/reset.png" alt="Reset" style="height:26px;opacity:0.5">
+					<td style="text-align:right;padding:10px">
+						<img id="npReset" src="/images/reset.png" alt="Reset" style="height:20px">
 					</td>
 				</tr>
 			</table>

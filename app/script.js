@@ -1,6 +1,7 @@
 window.browser = (function () {
 	return window.msBrowser || window.browser || window.chrome;
 })();
+var resizeSearch = 0;
 
 function load() {
 	browser.runtime.sendMessage({ Action: "logged"}, function(response) {
@@ -12,7 +13,7 @@ function load() {
 			// Get passwords for current page, if any.
 			browser.runtime.sendMessage({ Action: "getPasswords" }, function(response2) {
 				if (response2.passwords) {
-					document.getElementById("divPasswords").removeChild(document.getElementById("divLogins"));
+					document.getElementById("divPasswords").removeChild(document.getElementById("divNoLogins"));
 
 					let table = document.createElement("table");
 					table.id = "webResults";
@@ -23,24 +24,22 @@ function load() {
 						let td0 = document.createElement("td");
 						let td1 = document.createElement("td");
 						let td2 = document.createElement("td");
-						td0.className = "bold";
-						td0.style.width = "55%";
+						let td3 = document.createElement("td");
+						td0.className = "center";
+						td0.style.width = "80%";
 						td0.addEventListener("click", clickCell, false);
-						td0.addEventListener("mouseenter", enterCell, false);
-						td0.addEventListener("mouseleave", leaveCell, false);
-						td1.className = "center";
-						td1.style.width = "25%";
+						td1.style.width = "15%";
 						td1.addEventListener("click", clickCell, false);
-						td1.addEventListener("mouseenter", enterCell, false);
-						td1.addEventListener("mouseleave", leaveCell, false);
-						td2.style.width = "20%";
+						td2.style.width = "5%";
 						td2.addEventListener("click", clickFill, false);
+						td3.style.width = "10%";
+
 						let td0T = document.createTextNode(response2.passwords[i]);
 						let td1T = document.createTextNode("*****");
 						let td2B = document.createElement("button");
-						let td2BT = document.createTextNode("Fill");
+						let td2TB = document.createTextNode("Fill");
+						td2B.appendChild(td2TB);
 
-						td2B.appendChild(td2BT);
 
 						td0.appendChild(td0T);
 						td1.appendChild(td1T);
@@ -49,9 +48,15 @@ function load() {
 						row.appendChild(td0);
 						row.appendChild(td1);
 						row.appendChild(td2);
+						row.appendChild(td3);
 						table.appendChild(row);
 					}
 					document.getElementById("divPasswords").insertAdjacentElement('afterbegin', table);
+					if (response.view == "main") {
+						let h = 481 - document.getElementById("webResults").offsetHeight;
+						if (h < 300)
+							document.getElementById("searchResultsDiv").style.maxHeight = h + "px";
+					}
 				}
 			});
 
@@ -102,15 +107,14 @@ function load() {
 				loadNew();
 				document.getElementById("npAddress").select();
 			}
-		}
-		else {
+		} else {
 			// Load login div
 			document.getElementById("loginHost").value = localStorage.getItem("host");
 			document.getElementById("loginUser").value = localStorage.getItem("user");
 			document.getElementById("loginPass").placeholder = (localStorage.getItem("code")) ? "******" : "";
 			document.getElementById("loginRemember").checked = (parseInt(localStorage.getItem("remember")) ? true : false);
 			hostChanged();
-		
+
 			browser.browserAction.setBadgeText({ text: "" });
 			viewLogin();
 			document.getElementById("loginHost").select();
@@ -131,6 +135,14 @@ function viewPasswords() {
 	document.getElementById("divLogin").style.display = "none";
 	document.getElementById("divPasswords").style.display = "table";
 	document.getElementById("divNew").style.display = "none";
+	if (!resizeSearch) {
+		if (document.getElementById("webResults")) {
+			let h = 481 - document.getElementById("webResults").offsetHeight;
+			if (h < 300)
+				document.getElementById("searchResultsDiv").style.maxHeight = h + "px";
+			resizeSearch = 1;
+		}
+	}
 }
 
 function viewNew() {
@@ -159,8 +171,7 @@ function hostChanged() {
 
 	if (https) {
 		document.getElementById("loginHostWarning").style.display = (https[1].toLowerCase() == "https" ? "none" : "table-row");
-	}
-	else {
+	} else {
 		element.value = "https://" + element.value;
 		document.getElementById("loginHostWarning").style.display = "none";
 	}
@@ -193,8 +204,7 @@ function login() {
 	localStorage.setItem("remember", (document.getElementById("loginRemember").checked ? 1 : 0));
 	if (document.getElementById("loginRemember").checked) {
 		localStorage.setItem("user", User);
-	}
-	else {
+	} else {
 		localStorage.removeItem("user");
 		localStorage.removeItem("login");
 	}
@@ -209,14 +219,7 @@ function login() {
 		}
 	} else {
 		// Send values to background script
-		if (document.getElementById("loginRemember").checked) {
-			browser.runtime.sendMessage({ Action: "login", Host, User, Pass}, function(response) {
-				localStorage.setItem("code", response);
-			});
-		}
-		else {
-			browser.runtime.sendMessage({ Action: "login", Host, User, Pass });
-		}
+		browser.runtime.sendMessage({ Action: "login", Host, User, Pass});
 	}
 	window.close();
 }
@@ -250,7 +253,8 @@ function searchChanged() {
 
 function search() {
 	var string = document.getElementById("searchText").value.trim();
-	var parent = document.getElementById("tableSearch");
+	//var parent = document.getElementById("tableSearch");
+	var parent = document.getElementById("searchResultsDiv");
 
 	// remove last search, if any
 	let destroy = document.getElementById("searchResults");
@@ -275,29 +279,23 @@ function search() {
 				row.id = i;
 
 				let td0 = document.createElement("td");
-				td0.style.width = "40%";
+				td0.style.width = "45%";
 				if (response.hasAddress[i]) {
 					td0.tabIndex = 0;
 					td0.className = "href";
 					td0.addEventListener("click", clickCell, false);
 					td0.addEventListener("keyup", keyCell, false);
 				}
-				td0.addEventListener("mouseenter", enterCell, false);
-				td0.addEventListener("mouseleave", leaveCell, false);
 
 				let td1 = document.createElement("td");
 				td1.className = "center";
-				td1.style.width = "35%";
+				td1.style.width = "40%";
 				td1.addEventListener("click", clickCell, false);
-				td1.addEventListener("mouseenter", enterCell, false);
-				td1.addEventListener("mouseleave", leaveCell, false);
 
 				let td2 = document.createElement("td");
 				td2.className = "center";
-				td2.style.width = "25%";
+				td2.style.width = "15%";
 				td2.addEventListener("click", clickCell, false);
-				td2.addEventListener("mouseenter", enterCell, false);
-				td2.addEventListener("mouseleave", leaveCell, false);
 
 				let td0T = document.createTextNode(response.websiteList[i]);
 				let td1T = document.createTextNode(response.userList[i]);
@@ -313,7 +311,8 @@ function search() {
 
 				table.appendChild(row);
 			}
-			parent.parentNode.insertBefore(table, parent.nextSibling);
+			parent.appendChild(table);
+			parent.style.overflowY = "auto"; // Can't do through CSS. Fails on firefox.
 		}
 	});
 }
@@ -362,14 +361,6 @@ function clickElement(el) {
 			clearInterval(sessionStorage.x)
 		countdown(parseInt(localStorage.getItem("countDown")));
 	}
-}
-
-function enterCell(e) {
-	this.classList.add("highlightCell");
-}
-
-function leaveCell (e) {
-	this.classList.remove("highlightCell");
 }
 
 function clickFill(e) {
@@ -432,7 +423,7 @@ function resetNew() {
 		document.getElementById("npAddress").value = "";
 		document.getElementById("npUser").value = "";
 		document.getElementById("npPass").value = "";
-		if (document.getElementById("npCaegory"))
+		if (document.getElementById("npCategory"))
 			document.getElementById("npCategory").value = "0";
 		document.getElementById("npNotes").value = "";
 		document.getElementById("npLower").checked = 1;
@@ -458,7 +449,7 @@ function createNew() {
 	let newAddress = document.getElementById("npAddress").value;
 	let newNotes = document.getElementById("npNotes").value;
 	let newCategory = (document.getElementById("npCategory")) ? document.getElementById("npCategory").value : 0;
-	
+
 	let errors = 0;
 	if (newLogin.length == 0) {
 		showWarning("npUser", "Login or email required");
@@ -489,18 +480,13 @@ function createNew() {
 	}
 }
 
-function useGenerator() {
-	//let gpo = document.getElementById("rowGenerator");
-	//if (gpo.style.display === "table-row") { // Generate a password
+function generatePw() {
 	let gLow = document.getElementById("npLower").checked;
 	let gUp = document.getElementById("npUpper").checked;
 	let gNum = document.getElementById("npNumber").checked;
 	let gSpecial = document.getElementById("npSpecial").checked;
 	let gLength = parseInt(document.getElementById("npLength").value);
 	document.getElementById("npPass").value= generatepw(gLow, gUp, gNum, gSpecial, gLength);
-	//} else { // Show Generator
-	//	gpo.style.display = "table-row";
-	//}
 }
 
 function trimValue(id) {
@@ -520,7 +506,8 @@ function addressChanged() {
 		document.getElementById("npAddress").value = url;
 		if (document.getElementById("npWebsite").value.length == 0) {
 			var objurl = new URL(url)
-			document.getElementById("npWebsite").value = objurl.hostname.replace(new RegExp(/^(www\d?\.)(.*)$/, "gi"), "$2");
+			localStorage.setItem("npWebsite", objurl.hostname.replace(new RegExp(/^(www\d?\.)(.*)$/, "gi"), "$2"));
+			document.getElementById("npWebsite").value = localStorage.getItem("npWebsite");
 		}
 		return true;
 	} else { // URL is wrong
