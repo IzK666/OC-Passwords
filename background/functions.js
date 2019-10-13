@@ -15,14 +15,14 @@ function start() {
 		localStorage.setItem("countDown", 10);
 
 
+	localStorage.removeItem("searchword"); // Remove search
+	browser.browserAction.setBadgeText({text: ""});
+	browser.browserAction.setIcon({path: "images/icon_grey.png"});
+
 	// Check User and Password localStorage variables
 	if (localStorage.getItem("user") && localStorage.getItem("code")) {
 		login (localStorage.getItem("host"), localStorage.getItem("code"));
 	}
-
-	localStorage.removeItem("searchword"); // Remove search
-	browser.browserAction.setBadgeText({text: ""});
-	browser.browserAction.setIcon({path: "images/icon_grey.png"});
 }
 
 function login(Host, User, Pass=null) {
@@ -32,12 +32,11 @@ function login(Host, User, Pass=null) {
 	let Login = (Pass == null) ? User : btoa(User + ":" + Pass);
 	database = {
 		Host,
-		User,
 		Login
 	};
 	fetchAll(database, function (F){fetchCategories(database);loggedIn();});
 	database.currentView = "main";
-	if (localStorage.remember == 1)
+	if ((Pass != null) && (localStorage.remember == 1))
 		localStorage.setItem("code", Login);
 }
 

@@ -26,7 +26,7 @@ function load() {
 						let td2 = document.createElement("td");
 						let td3 = document.createElement("td");
 						td0.className = "center";
-						td0.style.width = "80%";
+						td0.style.width = "70%";
 						td0.addEventListener("click", clickCell, false);
 						td1.style.width = "15%";
 						td1.addEventListener("click", clickCell, false);

@@ -7,12 +7,11 @@ window.browser = (function () {
 browser.runtime.onInstalled.addListener(function() {
 	// Remove old variables not longer used
 	delete localStorage.pass;
-	start();
+	setTimeout(start, 5000);
 });
 
 browser.runtime.onStartup.addListener(function() {
 	setTimeout(start, 5000);
-	//start();
 });
 
 browser.runtime.onMessage.addListener(

@@ -48,8 +48,9 @@ select {
 	display:			block;
 	max-height:			381px;
 	overflow-y:			auto;
+	overflow-x:			hidden;
 	border-collapse:	collapse;
-	margin:				0px 0px 10px 0px;
+	padding-bottom:		10px;
 	scrollbar-color:	#08E #CCD;
 	scrollbar-width:	thin;
 }
@@ -91,11 +92,11 @@ select {
 	background-color:	#EEEEF6;
 }
 
-#webResults td:hover,
+#webResults td:not(:last-child):hover,
 #searchResults td:hover {
 	font-weight:		bold;
 	color:				red;
-	transform:			scale(1.15);translate(20px);
+	transform:			scale(1.15);
 	overflow:			visible;
 }
 

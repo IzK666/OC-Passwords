@@ -15,9 +15,12 @@ Published in [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/ow
 * Create new passwords (no login detection)
 
 ## Changelog (Not all versions are released):
+### 1.92
+	Fixed: On hover the last password for current site, appeared ugly and unnecessary scrollbars
+
 ### 1.91
 	New: Make text (search results) not selectable
-	New: Added confirmation when new password is created/uploaded
+	New: Added feedback when new password is created/uploaded
 	Fixed: Bottom icons won't disappear. Added scrollbars for current url passwords (more than 10 matches) and search results (at least 4 will be visible, but usually 10)
 	Fixed: Issues with focus when switching between Search/Fill view and New Password
 	Fixed: Import url button don't store Site in memory and went lost after closing the interface
